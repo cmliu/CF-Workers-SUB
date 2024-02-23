@@ -7,8 +7,8 @@ let ChatID =''; //可以为空，或者@userinfobot中获取，/start
 
 //自建节点
 const MainData = `
-vless://30e9c5c8-ed28-4cd9-b008-dc67277f8b02@cf.090227.xyz:8443?encryption=none&security=tls&sni=tg.cmliussss.xxuz.com&fp=random&type=ws&host=tg.cmliussss.xxuz.com&path=%2FproxyIP%3Dproxyip.fxxk.dedyn.io#%E5%8A%A0%E5%85%A5%E6%88%91%E7%9A%84%E9%A2%91%E9%81%93%20t.me%2FCMLiussss%20%E8%A7%A3%E9%94%81%E6%9B%B4%E5%A4%9A%E4%BC%98%E9%80%89%E8%8A%82%E7%82%B9
-vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIkNoYW5uZWwgdC5tZS9DTUxpdXNzc3Mg6Kej6ZSB5LyY6YCJ6IqC54K5PuiNt+WFsCDpmL/lp4bmlq/nibnkuLkiLA0KICAiYWRkIjogImNmLjA5MDIyNy54eXoiLA0KICAicG9ydCI6ICI4NDQzIiwNCiAgImlkIjogIjA2MTk1YjViLTM4MTUtNGEwNy05NmY3LTQ3ZWVmYmIxYjE0MyIsDQogICJhaWQiOiAiMCIsDQogICJzY3kiOiAiYXV0byIsDQogICJuZXQiOiAid3MiLA0KICAidHlwZSI6ICJub25lIiwNCiAgImhvc3QiOiAiODU4MmI2ZjItNzE5Mi00ZGE4LWE0Y2ItYzQ4MGI3MWU2YzU4LmU4ZTU0ZTBmLTYzMTctNDQ4YS05OTk5LTk1ZjZlMTZmNzExNy5vb2d1eS5jb20iLA0KICAicGF0aCI6ICIvdXJueGV3enZoLnNpdGU6NDQzL2t3aG12d3MiLA0KICAidGxzIjogInRscyIsDQogICJzbmkiOiAiODU4MmI2ZjItNzE5Mi00ZGE4LWE0Y2ItYzQ4MGI3MWU2YzU4LmU4ZTU0ZTBmLTYzMTctNDQ4YS05OTk5LTk1ZjZlMTZmNzExNy5vb2d1eS5jb20iLA0KICAiYWxwbiI6ICIiLA0KICAiZnAiOiAiIg0KfQ==
+vless://30e9c5c8-ed28-4cd9-b008-dc67277f8b02@cf.090227.xyz:8443?encryption=none&security=tls&sni=edgetunnel-2z2.pages.dev&fp=random&type=ws&host=edgetunnel-2z2.pages.dev&path=TG%40CMLiussss#%E5%8A%A0%E5%85%A5%E6%88%91%E7%9A%84%E9%A2%91%E9%81%93%20t.me%2FCMLiussss%20%E8%A7%A3%E9%94%81%E6%9B%B4%E5%A4%9A%E4%BC%98%E9%80%89%E8%8A%82%E7%82%B9
+vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIkNoYW5uZWwgdC5tZS9DTUxpdXNzc3Mg6Kej6ZSB5LyY6YCJ6IqC54K5PuiNt+WFsCDpmL/lp4bmlq/nibnkuLkiLA0KICAiYWRkIjogImNmLjA5MDIyNy54eXoiLA0KICAicG9ydCI6ICI4NDQzIiwNCiAgImlkIjogIjA2MTk1YjViLTM4MTUtNGEwNy05NmY3LTQ3ZWVmYmIxYjE0MyIsDQogICJhaWQiOiAiMCIsDQogICJzY3kiOiAiYXV0byIsDQogICJuZXQiOiAid3MiLA0KICAidHlwZSI6ICJub25lIiwNCiAgImhvc3QiOiAicHBmdjJ0bDl2ZW9qZC1tYWlsbGF6eS5wYWdlcy5kZXYiLA0KICAicGF0aCI6ICIvdXJueGV3enZoLnNpdGU6NDQzL2t3aG12d3MiLA0KICAidGxzIjogInRscyIsDQogICJzbmkiOiAicHBmdjJ0bDl2ZW9qZC1tYWlsbGF6eS5wYWdlcy5kZXYiLA0KICAiYWxwbiI6ICIiLA0KICAiZnAiOiAiIg0KfQ==
 `
 
 //机场信息，可多个，也可为0
@@ -31,7 +31,7 @@ export default {
 		//const tag = url.searchParams.get('tag');
 		const token = url.searchParams.get('token'); // Get the token from the URL
 
-		if (token !== mytoken) {
+		if (!(token == mytoken || url.pathname.includes("/"+ mytoken))) {
 			//await sendMessage("#Token错误信息", request.headers.get('CF-Connecting-IP'), `Invalid Token: ${token}`);
 			return new Response('Invalid token???', { status: 403 });
 		}
