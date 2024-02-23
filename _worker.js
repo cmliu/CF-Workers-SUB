@@ -42,7 +42,7 @@ export default {
 			method: 'get',
 			headers: {
 				'Accept': 'text/html,application/xhtml+xml,application/xml;',
-				'User-Agent': 'Mozilla/5.0 Chrome/90.0.4430.72 CF-Workers-SUB'
+				'User-Agent': 'CF-Workers-SUB/cmliu'
 			}
 		})));
 			
