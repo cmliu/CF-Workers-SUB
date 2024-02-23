@@ -24,6 +24,8 @@
 - 获取自建节点和机场聚合节点的订阅
 ```
 https://your-server-url.com/?token=xxoo
+or
+https://your-server-url.com/xxoo
 ```
 
 ## 注意事项
