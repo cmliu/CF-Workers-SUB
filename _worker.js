@@ -1,7 +1,5 @@
 
-// 部署完成后在网址后面加上这个，获取自建节点和机场聚合节点，/?token=xxoo&tag=jichang
-// 部署完成后在网址后面加上这个，只获取自建节点，/?token=xxoo
-
+// 部署完成后在网址后面加上这个，获取自建节点和机场聚合节点，/?token=xxoo
 
 const mytoken = 'xxoo'; //可以随便取，或者uuid生成，https://1024tools.com/uuid
 let BotToken =''; //可以为空，或者@BotFather中输入/start，/newbot，并关注机器人
@@ -16,7 +14,7 @@ ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpleGFtcGxlLmNvbQ@example2.com:443#example2
 //机场信息，可多个，也可为0
 const urls = [
 	'https://mareep.netlify.app/sub/shadowrocket_base64.txt',
-	'https://mareep.netlify.app/sub/shadowrocket_base64.txt'
+	'https://mareep.netlify.app/sub/shadowrocket_base64.txt',
 	// 添加更多订阅,支持base64
 ];
 
@@ -30,7 +28,7 @@ export default {
 		const userAgentHeader = request.headers.get('User-Agent');
 		const userAgent = userAgentHeader ? userAgentHeader.toLowerCase() : "null";
 		const url = new URL(request.url);
-		const tag = url.searchParams.get('tag');
+		//const tag = url.searchParams.get('tag');
 		const token = url.searchParams.get('token'); // Get the token from the URL
 
 		if (token !== mytoken) {
@@ -40,25 +38,20 @@ export default {
 
 		let req_data = "";
 		req_data += MainData
-		if (tag) {
-			switch (tag) {
-			case 'jichang':
-				const responses = await Promise.all(urls.map(url => fetch(url)));
-		
-				for (const response of responses) {
-					if (response.ok) {
-						const content = await response.text();
-						req_data += atob(content) + '\n';
-					}
-				}
-				
-				break;
-		
-			default:
-				
-				break;
+		const responses = await Promise.all(urls.map(url => fetch(url,{
+			method: 'get',
+			headers: {
+				'Accept': 'text/html,application/xhtml+xml,application/xml;',
+				'User-Agent': 'Mozilla/5.0 Chrome/90.0.4430.72 CF-Workers-SUB'
 			}
-		} 
+		})));
+			
+		for (const response of responses) {
+			if (response.ok) {
+				const content = await response.text();
+				req_data += atob(content) + '\n';
+			}
+		}
 
 		await sendMessage("#获取订阅", request.headers.get('CF-Connecting-IP'), `UA: ${userAgent}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
 
