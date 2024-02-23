@@ -4,8 +4,8 @@
 
 
 const mytoken = 'xxoo'; //可以随便取，或者uuid生成，https://1024tools.com/uuid
-const tgbottoken =''; //可以为空，或者@BotFather中输入/start，/newbot，并关注机器人
-const tgchatid =''; //可以为空，或者@userinfobot中获取，/start
+let BotToken =''; //可以为空，或者@BotFather中输入/start，/newbot，并关注机器人
+let ChatID =''; //可以为空，或者@userinfobot中获取，/start
 
 //自建节点
 const MainData = `
@@ -20,10 +20,15 @@ const urls = [
 	// 添加更多订阅,支持base64
 ];
 
+let subconverter = "api.v1.mk"; //在线订阅转换后端，目前使用肥羊的订阅转换功能。支持自建psub 可自行搭建https://github.com/bulianglin/psub
+let subconfig = "https://raw.githubusercontent.com/cmliu/edgetunnel/main/Clash/config/ACL4SSR_Online_Full.ini"; //订阅配置文件
+
 //addEventListener('fetch', event => { event.respondWith(handleRequest(event.request)) })
 
 export default {
 	async fetch (request) {
+		const userAgentHeader = request.headers.get('User-Agent');
+		const userAgent = userAgentHeader ? userAgentHeader.toLowerCase() : "null";
 		const url = new URL(request.url);
 		const tag = url.searchParams.get('tag');
 		const token = url.searchParams.get('token'); // Get the token from the URL
@@ -56,12 +61,56 @@ export default {
 		} 
 
 		await sendMessage("#获取订阅", request.headers.get('CF-Connecting-IP'), `UA: ${userAgent}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
-		
-		//修复中文错误
-		const utf8Encoder = new TextEncoder();
-		const encodedData = utf8Encoder.encode(req_data);
-		const base64Data = btoa(String.fromCharCode.apply(null, encodedData));
-		return new Response(base64Data);
+
+		if (userAgent.includes('clash')) {
+			const subconverterUrl = `https://${subconverter}/sub?target=clash&url=${encodeURIComponent(request.url)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
+
+			try {
+				const subconverterResponse = await fetch(subconverterUrl);
+				
+				if (!subconverterResponse.ok) {
+					throw new Error(`Error fetching subconverterUrl: ${subconverterResponse.status} ${subconverterResponse.statusText}`);
+				}
+				
+				const subconverterContent = await subconverterResponse.text();
+				
+				return new Response(subconverterContent, {
+					headers: { 'content-type': 'text/plain; charset=utf-8' },
+				});
+			} catch (error) {
+				return new Response(`Error: ${error.message}`, {
+					status: 500,
+					headers: { 'content-type': 'text/plain; charset=utf-8' },
+				});
+			}
+		} else if (userAgent.includes('sing-box') || userAgent.includes('singbox')) {
+			const subconverterUrl = `https://${subconverter}/sub?target=singbox&url=${encodeURIComponent(request.url)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
+
+			try {
+				const subconverterResponse = await fetch(subconverterUrl);
+				
+				if (!subconverterResponse.ok) {
+					throw new Error(`Error fetching subconverterUrl: ${subconverterResponse.status} ${subconverterResponse.statusText}`);
+				}
+				
+				const subconverterContent = await subconverterResponse.text();
+				
+				return new Response(subconverterContent, {
+					headers: { 'content-type': 'text/plain; charset=utf-8' },
+				});
+			} catch (error) {
+				return new Response(`Error: ${error.message}`, {
+					status: 500,
+					headers: { 'content-type': 'text/plain; charset=utf-8' },
+				});
+			}
+		} else {
+			//修复中文错误
+			const utf8Encoder = new TextEncoder();
+			const encodedData = utf8Encoder.encode(req_data);
+			const base64Data = btoa(String.fromCharCode.apply(null, encodedData));
+			return new Response(base64Data);
+		}
 	}
 };
 
