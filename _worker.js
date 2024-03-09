@@ -1,20 +1,20 @@
 
-// 部署完成后在网址后面加上这个，获取自建节点和机场聚合节点，/?token=xxoo
+// 部署完成后在网址后面加上这个，获取自建节点和机场聚合节点，/?token=auto
 
-const mytoken = 'xxoo'; //可以随便取，或者uuid生成，https://1024tools.com/uuid
+let mytoken = 'auto'; //可以随便取，或者uuid生成，https://1024tools.com/uuid
 let BotToken =''; //可以为空，或者@BotFather中输入/start，/newbot，并关注机器人
 let ChatID =''; //可以为空，或者@userinfobot中获取，/start
 
 //自建节点
 const MainData = `
-vless://30e9c5c8-ed28-4cd9-b008-dc67277f8b02@cf.090227.xyz:8443?encryption=none&security=tls&sni=edgetunnel-2z2.pages.dev&fp=random&type=ws&host=edgetunnel-2z2.pages.dev&path=TG%40CMLiussss#%E5%8A%A0%E5%85%A5%E6%88%91%E7%9A%84%E9%A2%91%E9%81%93%20t.me%2FCMLiussss%20%E8%A7%A3%E9%94%81%E6%9B%B4%E5%A4%9A%E4%BC%98%E9%80%89%E8%8A%82%E7%82%B9
+vless://b7a392e2-4ef0-4496-90bc-1c37bb234904@cf.090227.xyz:443?encryption=none&security=tls&sni=edgetunnel-2z2.pages.dev&fp=random&type=ws&host=edgetunnel-2z2.pages.dev&path=%2F%3Fed%3D2048#%E5%8A%A0%E5%85%A5%E6%88%91%E7%9A%84%E9%A2%91%E9%81%93t.me%2FCMLiussss%E8%A7%A3%E9%94%81%E6%9B%B4%E5%A4%9A%E4%BC%98%E9%80%89%E8%8A%82%E7%82%B9
 vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIkNoYW5uZWwgdC5tZS9DTUxpdXNzc3Mg6Kej6ZSB5LyY6YCJ6IqC54K5PuiNt+WFsCDpmL/lp4bmlq/nibnkuLkiLA0KICAiYWRkIjogImNmLjA5MDIyNy54eXoiLA0KICAicG9ydCI6ICI4NDQzIiwNCiAgImlkIjogIjA2MTk1YjViLTM4MTUtNGEwNy05NmY3LTQ3ZWVmYmIxYjE0MyIsDQogICJhaWQiOiAiMCIsDQogICJzY3kiOiAiYXV0byIsDQogICJuZXQiOiAid3MiLA0KICAidHlwZSI6ICJub25lIiwNCiAgImhvc3QiOiAicHBmdjJ0bDl2ZW9qZC1tYWlsbGF6eS5wYWdlcy5kZXYiLA0KICAicGF0aCI6ICIvdXJueGV3enZoLnNpdGU6NDQzL2t3aG12d3MiLA0KICAidGxzIjogInRscyIsDQogICJzbmkiOiAicHBmdjJ0bDl2ZW9qZC1tYWlsbGF6eS5wYWdlcy5kZXYiLA0KICAiYWxwbiI6ICIiLA0KICAiZnAiOiAiIg0KfQ==
 `
 
 //机场信息，可多个，也可为0
 const urls = [
-	'https://mareep.netlify.app/sub/shadowrocket_base64.txt',
-	'https://mareep.netlify.app/sub/shadowrocket_base64.txt',
+	'https://sub.xf.free.hr/auto',
+	'https://hy2sub.pages.dev',
 	// 添加更多订阅,支持base64
 ];
 
@@ -24,37 +24,43 @@ let subconfig = "https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/conf
 //addEventListener('fetch', event => { event.respondWith(handleRequest(event.request)) })
 
 export default {
-	async fetch (request) {
+	async fetch (request,env) {
 		const userAgentHeader = request.headers.get('User-Agent');
 		const userAgent = userAgentHeader ? userAgentHeader.toLowerCase() : "null";
 		const url = new URL(request.url);
-		//const tag = url.searchParams.get('tag');
-		const token = url.searchParams.get('token'); // Get the token from the URL
+		const token = url.searchParams.get('token');
+		mytoken = env.TOKEN || mytoken;
+		BotToken = env.TGTOKEN || BotToken;
+		ChatID = env.TGID || ChatID; 
 
 		if (!(token == mytoken || url.pathname.includes("/"+ mytoken))) {
 			//await sendMessage("#Token错误信息", request.headers.get('CF-Connecting-IP'), `Invalid Token: ${token}`);
-			return new Response('Invalid token???', { status: 403 });
+			return new Response('Hello World!', { status: 403 });
 		}
 
 		let req_data = "";
-		req_data += MainData
-		const responses = await Promise.all(urls.map(url => fetch(url,{
-			method: 'get',
-			headers: {
-				'Accept': 'text/html,application/xhtml+xml,application/xml;',
-				'User-Agent': 'CF-Workers-SUB/cmliu'
+		req_data += MainData;
+		
+		try {
+			const responses = await Promise.all(urls.map(url => fetch(url,{
+				method: 'get',
+				headers: {
+					'Accept': 'text/html,application/xhtml+xml,application/xml;',
+					'User-Agent': 'CF-Workers-SUB/cmliu'
+				}
+			})));
+				
+			for (const response of responses) {
+				if (response.ok) {
+					const content = await response.text();
+					req_data += atob(content) + '\n';
+				}
 			}
-		})));
-			
-		for (const response of responses) {
-			if (response.ok) {
-				const content = await response.text();
-				req_data += atob(content) + '\n';
-			}
+		} catch (error) {
+
 		}
 
 		await sendMessage("#获取订阅", request.headers.get('CF-Connecting-IP'), `UA: ${userAgent}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
-
 		if (userAgent.includes('clash')) {
 			const subconverterUrl = `https://${subconverter}/sub?target=clash&url=${encodeURIComponent(request.url)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
 
@@ -101,7 +107,14 @@ export default {
 			//修复中文错误
 			const utf8Encoder = new TextEncoder();
 			const encodedData = utf8Encoder.encode(req_data);
-			const base64Data = btoa(String.fromCharCode.apply(null, encodedData));
+			const text = String.fromCharCode.apply(null, encodedData);
+
+			//去重
+			const uniqueLines = new Set(text.split('\n'));
+			const result = [...uniqueLines].join('\n');
+			//console.log(result);
+
+			const base64Data = btoa(result);
 			return new Response(base64Data);
 		}
 	}
