@@ -10,6 +10,7 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)
    - 在 Cloudflare Worker 控制台中创建一个新的 Worker。
    - 将 [worker.js](https://github.com/cmliu/CF-Workers-SUB/blob/main/_worker.js)  的内容粘贴到 Worker 编辑器中。
 
+
 ### 2. 修改 订阅入口 ：
 
   例如您的workers项目域名为：`sub.cmliussss.workers.dev`；
@@ -23,6 +24,7 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)
      或
      https://sub.cmliussss.workers.dev/?token=auto
      ```
+
 
 ### 3. 添加你的节点或订阅链接：
 
@@ -39,9 +41,11 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)
 注意！`MainData`参数的特殊引号必须保留，否则代码异常。
 
 
+
  **3.2 修改 urls 参数示例**
  
  - 修改 `urls` 参数，在脚本中设置 `urls` 变量为 你的订阅链接 的 URL。例如：
+
 	```js
 	const urls = [
 		'https://sub.xf.free.hr/auto',
@@ -49,6 +53,8 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)
 	];
 	```
 注意！订阅链接内容必须为`base64`格式。
+
+## Pages 部署方法 [视频教程](https://youtu.be/KVJgCnFp1uU)
 
 ## 变量说明
 | 变量名 | 示例 | 备注 | 
@@ -60,11 +66,14 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)
 | SUBAPI | api.v1.mk | clash、singbox等 订阅转换后端 | 
 | SUBCONFIG | [https://raw.github.../ACL4SSR_Online_Full_MultiMode.ini](https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_Full_MultiMode.ini) | clash、singbox等 订阅转换配置文件 | 
 
+
 ## 注意事项
 项目中，TGTOKEN和TGID在使用时需要先到Telegram注册并获取。其中，TGTOKEN是telegram bot的凭证，TGID是用来接收通知的telegram用户或者组的id。
 
+
 ## Star 星星走起
 [![Stargazers over time](https://starchart.cc/cmliu/CF-Workers-SUB.svg?variant=adaptive)](https://starchart.cc/cmliu/CF-Workers-SUB)
+
 
 # 感谢
 [mianayang](https://github.com/mianayang/myself/blob/main/cf-workers/sub/sub.js)
