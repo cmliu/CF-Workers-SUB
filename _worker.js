@@ -17,6 +17,7 @@ vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIuWKoOWFpeaIkeeahOmikemBk3QubWUvQ01MaXVz
 const urls = [
 	'https://sub.xf.free.hr/auto',
 	'https://hy2sub.pages.dev',
+	'https://mm.mdt99.dynv6.net/a51abc7b-bbd6-41bc-9b30-79f6eaace787'
 	// 添加更多订阅,支持base64
 ];
 
