@@ -48,6 +48,8 @@ export default {
 		if (links.charAt(0) == '|') links = links.slice(1);
 		if (links.charAt(links.length -1) == '|') links = links.slice(0, links.length - 1);
 		//console.log(links);
+		if (!subconverter.includes(".workers.dev") && !subconverter.includes(".pages.dev"))links = request.url;
+		//检测订阅转换后端非自设隐私后端将隐藏订阅源头
 
 		if ( !(token == mytoken || url.pathname == ("/"+ mytoken) || url.pathname.includes("/"+ mytoken + "?")) ) {
 			if ( TG == 1 && url.pathname !== "/" && url.pathname !== "/favicon.ico" ) await sendMessage("#异常访问", request.headers.get('CF-Connecting-IP'), `UA: ${userAgent}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
@@ -88,8 +90,8 @@ export default {
 		}
 
 		if (userAgent.includes('clash')) {
+			
 			const subconverterUrl = `https://${subconverter}/sub?target=clash&url=${encodeURIComponent(links)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
-			//const subconverterUrl = `https://${subconverter}/sub?target=clash&url=${encodeURIComponent(request.url)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
 
 			try {
 				const subconverterResponse = await fetch(subconverterUrl);
@@ -114,7 +116,6 @@ export default {
 			}
 		} else if (userAgent.includes('sing-box') || userAgent.includes('singbox')) {
 			const subconverterUrl = `https://${subconverter}/sub?target=singbox&url=${encodeURIComponent(links)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
-			//const subconverterUrl = `https://${subconverter}/sub?target=singbox&url=${encodeURIComponent(request.url)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
 
 			try {
 				const subconverterResponse = await fetch(subconverterUrl);
