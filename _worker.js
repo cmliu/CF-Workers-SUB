@@ -42,7 +42,7 @@ export default {
 		//console.log(MainData);
 
 		let links = MainData;
-		if(env.SUBLINK) urls = await ADD(env.SUBLINK);
+		if(env.LINKSUB) urls = await ADD(env.LINKSUB);
 		links += '|' + urls.join('|');  // 将 urls 数组的元素作为字符串添加到 links 的末尾
 		links = links.replace(/[	 "'\r\n]+/g, '|').replace(/\|\|+/g, '|'); 
 		if (links.charAt(0) == '|') links = links.slice(1);
