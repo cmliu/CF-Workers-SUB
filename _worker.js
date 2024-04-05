@@ -38,7 +38,7 @@ export default {
 
 		MainData = env.LINK || MainData;
 		const link = await ADD(MainData);
-		MainData = link.join('\n');
+		MainData = link.join('\n') + '\n';
 		//console.log(MainData);
 
 		let links = MainData;
