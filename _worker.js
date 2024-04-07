@@ -7,16 +7,17 @@ let ChatID =''; //可以为空，或者@userinfobot中获取，/start
 let TG = 0; //1 为推送所有的访问信息，0 为不推送订阅转换后端的访问信息与异常访问
 let SUBUpdateTime = 6; //自定义订阅更新时间，单位小时
 
-//自建节点
+//自建节点+机场订阅
 let MainData = `
 vless://b7a392e2-4ef0-4496-90bc-1c37bb234904@cf.090227.xyz:443?encryption=none&security=tls&sni=edgetunnel-2z2.pages.dev&fp=random&type=ws&host=edgetunnel-2z2.pages.dev&path=%2F%3Fed%3D2048#%E5%8A%A0%E5%85%A5%E6%88%91%E7%9A%84%E9%A2%91%E9%81%93t.me%2FCMLiussss%E8%A7%A3%E9%94%81%E6%9B%B4%E5%A4%9A%E4%BC%98%E9%80%89%E8%8A%82%E7%82%B9
-vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIuWKoOWFpeaIkeeahOmikemBk3QubWUvQ01MaXVzc3Nz6Kej6ZSB5pu05aSa5LyY6YCJ6IqC54K5PuiLseWbvSDlgKvmlabph5Hono3ln44iLA0KICAiYWRkIjogImNmLjA5MDIyNy54eXoiLA0KICAicG9ydCI6ICI4NDQzIiwNCiAgImlkIjogIjAzZmNjNjE4LWI5M2QtNjc5Ni02YWVkLThhMzhjOTc1ZDU4MSIsDQogICJhaWQiOiAiMCIsDQogICJzY3kiOiAiYXV0byIsDQogICJuZXQiOiAid3MiLA0KICAidHlwZSI6ICJub25lIiwNCiAgImhvc3QiOiAicHBmdjJ0bDl2ZW9qZC1tYWlsbGF6eS5wYWdlcy5kZXYiLA0KICAicGF0aCI6ICIvamFkZXIuZnVuOjQ0My9saW5rdndzIiwNCiAgInRscyI6ICJ0bHMiLA0KICAic25pIjogInBwZnYydGw5dmVvamQtbWFpbGxhenkucGFnZXMuZGV2IiwNCiAgImFscG4iOiAiIiwNCiAgImZwIjogIiINCn0=
+https://sub.xf.free.hr/auto
+https://hy2sub.pages.dev
 `
 
 //机场信息，可多个，也可为0
 let urls = [
-	'https://sub.xf.free.hr/auto',
-	'https://hy2sub.pages.dev',
+	//'https://sub.xf.free.hr/auto',
+	//'https://hy2sub.pages.dev',
 	// 添加更多订阅,支持base64
 ];
 
@@ -37,17 +38,24 @@ export default {
 		subconfig = env.SUBCONFIG || subconfig;
 
 		MainData = env.LINK || MainData;
-		const link = await ADD(MainData);
-		MainData = link.join('\n') + '\n';
-		//console.log(MainData);
-
-		let links = MainData;
 		if(env.LINKSUB) urls = await ADD(env.LINKSUB);
-		links += '|' + urls.join('|');  // 将 urls 数组的元素作为字符串添加到 links 的末尾
-		links = links.replace(/[	 "'\r\n]+/g, '|').replace(/\|\|+/g, '|'); 
-		if (links.charAt(0) == '|') links = links.slice(1);
-		if (links.charAt(links.length -1) == '|') links = links.slice(0, links.length - 1);
-		//console.log(links);
+
+		let links = await ADD(MainData + '\n' + urls.join('\n'));
+		let link ="";
+		let linksub = "";
+		
+		for (let x of links) {
+			if (x.toLowerCase().startsWith('http')) {
+				linksub += x + '\n';
+			} else {
+			  link += x + '\n';
+			}
+		}
+		MainData = link;
+		urls = await ADD(linksub)
+		links = (MainData.replace(/[	 "'\r\n]+/g, '|') + '|' + urls.join('|')).replace(/\|\|+/g, '|'); 
+		console.log(MainData,urls,links);
+
 		if (!subconverter.includes(".workers.dev") && !subconverter.includes(".pages.dev"))links = request.url;
 		//检测订阅转换后端非自设隐私后端将隐藏订阅源头
 
@@ -215,7 +223,7 @@ function base64Decode(str) {
 }
 
 async function ADD(envadd) {
-	var addtext = envadd.replace(/[	 "'\r\n]+/g, ',').replace(/,+/g, ',');  // 将空格、双引号、单引号和换行符替换为逗号
+	var addtext = envadd.replace(/[	 "'|\r\n]+/g, ',').replace(/,+/g, ',');  // 将空格、双引号、单引号和换行符替换为逗号
 	//console.log(addtext);
 	if (addtext.charAt(0) == ',') addtext = addtext.slice(1);
 	if (addtext.charAt(addtext.length -1) == ',') addtext = addtext.slice(0, addtext.length - 1);
