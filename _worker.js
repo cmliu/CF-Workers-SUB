@@ -56,9 +56,6 @@ export default {
 		links = (MainData.replace(/[	 "'\r\n]+/g, '|') + '|' + urls.join('|')).replace(/\|\|+/g, '|'); 
 		console.log(MainData,urls,links);
 
-		if (!subconverter.includes(".workers.dev") && !subconverter.includes(".pages.dev"))links = request.url;
-		//检测订阅转换后端非自设隐私后端将隐藏订阅源头
-
 		if ( !(token == mytoken || url.pathname == ("/"+ mytoken) || url.pathname.includes("/"+ mytoken + "?")) ) {
 			if ( TG == 1 && url.pathname !== "/" && url.pathname !== "/favicon.ico" ) await sendMessage("#异常访问", request.headers.get('CF-Connecting-IP'), `UA: ${userAgent}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
 			//首页改成一个nginx伪装页
@@ -99,7 +96,7 @@ export default {
 
 		if (userAgent.includes('clash')) {
 			
-			const subconverterUrl = `https://${subconverter}/sub?target=clash&url=${encodeURIComponent(links)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
+			const subconverterUrl = `https://${subconverter}/sub?target=clash&url=${encodeURIComponent(request.url)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
 
 			try {
 				const subconverterResponse = await fetch(subconverterUrl);
@@ -123,7 +120,7 @@ export default {
 				});
 			}
 		} else if (userAgent.includes('sing-box') || userAgent.includes('singbox')) {
-			const subconverterUrl = `https://${subconverter}/sub?target=singbox&url=${encodeURIComponent(links)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
+			const subconverterUrl = `https://${subconverter}/sub?target=singbox&url=${encodeURIComponent(request.url)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
 
 			try {
 				const subconverterResponse = await fetch(subconverterUrl);
@@ -151,24 +148,24 @@ export default {
 			req_data += MainData;
 			
 			try {
-				const responses = await Promise.all(urls.map(url => fetch(url,{
-					method: 'get',
-					headers: {
-						'Accept': 'text/html,application/xhtml+xml,application/xml;',
-						'User-Agent': 'v2rayN/6.39 CF-Workers-SUB/cmliu'
-					}
-				})));
-					
+				const responses = await Promise.allSettled(urls.map(url =>
+					fetch(url, {
+						method: 'get',
+						headers: {
+							'Accept': 'text/html,application/xhtml+xml,application/xml;',
+							'User-Agent': 'v2rayN/6.39 cmliu/CF-Workers-SUB'
+						}
+					}).then(response => response.ok ? response.text() : Promise.reject())
+				));
+			
 				for (const response of responses) {
-					if (response.ok) {
-						const content = await response.text();
-						//console.log(content);
+					if (response.status === 'fulfilled') {
+						const content = await response.value;
 						req_data += base64Decode(content) + '\n';
-						//console.log(req_data);
 					}
 				}
 			} catch (error) {
-	
+				console.error(error);
 			}
 			//修复中文错误
 			const utf8Encoder = new TextEncoder();
