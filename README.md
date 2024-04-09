@@ -63,7 +63,6 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)
 | TOKEN | auto | 快速订阅内置节点的订阅路径地址 /auto | 
 | TGTOKEN | 6894123456:XXXXXXXXXX0qExVsBPUhHDAbXXXXXqWXgBA | 发送TG通知的机器人token | 
 | TGID | 6946912345 | 接收TG通知的账户数字ID | 
-| TG | 0 | 1 为推送所有的访问信息，0 为不推送订阅转换后端的访问信息与异常访问 | 
 | SUBAPI | api.v1.mk | clash、singbox等 订阅转换后端 | 
 | SUBCONFIG | [https://raw.github.../ACL4SSR_Online_Full_MultiMode.ini](https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_Full_MultiMode.ini) | clash、singbox等 订阅转换配置文件 | 
 
