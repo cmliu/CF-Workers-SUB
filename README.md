@@ -61,6 +61,7 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)
 |--------|---------|-----|
 | LINK | vless://b7a39... vmess://ew0K... https://sub...  | 可同时放入多个节点链接与多个订阅链接, 链接之间用换行做间隔 | 
 | TOKEN | auto | 快速订阅内置节点的订阅路径地址 /auto | 
+| WARP | https://warp.../clash.yaml https://warp.../singbox.json | 支持 clash 或 singbox 配置格式的WARP配置链接, 链接之间用换行做间隔 | 
 | TGTOKEN | 6894123456:XXXXXXXXXX0qExVsBPUhHDAbXXXXXqWXgBA | 发送TG通知的机器人token | 
 | TGID | 6946912345 | 接收TG通知的账户数字ID | 
 | SUBAPI | api.v1.mk | clash、singbox等 订阅转换后端 | 
@@ -76,4 +77,4 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)
 
 
 # 感谢
-[mianayang](https://github.com/mianayang/myself/blob/main/cf-workers/sub/sub.js)
+[mianayang](https://github.com/mianayang/myself/blob/main/cf-workers/sub/sub.js)、[ACL4SSR](https://github.com/ACL4SSR/ACL4SSR/tree/master/Clash/config)、[肥羊](https://github.com/youshandefeiyang/sub-web-modify)
