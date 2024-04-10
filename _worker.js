@@ -14,7 +14,7 @@ https://sub.xf.free.hr/auto
 https://hy2sub.pages.dev
 `
 
-//机场信息，可多个，也可为0
+//请将机场订阅链接填入上方
 let urls = [
 	//'https://sub.xf.free.hr/auto',
 	//'https://hy2sub.pages.dev',
@@ -48,13 +48,14 @@ export default {
 			if (x.toLowerCase().startsWith('http')) {
 				linksub += x + '\n';
 			} else {
-			  link += x + '\n';
+				link += x + '\n';
 			}
 		}
 		MainData = link;
 		urls = await ADD(linksub)
-		links = (MainData.replace(/[	 "'\r\n]+/g, '|') + '|' + urls.join('|')).replace(/\|\|+/g, '|'); 
-		console.log(MainData,urls,links);
+		let sublinks = request.url ;
+		if(env.WARP) sublinks += '|' + (await ADD(env.WARP)).join('|');
+		//console.log(MainData,urls,sublinks);
 
 		if ( !(token == mytoken || url.pathname == ("/"+ mytoken) || url.pathname.includes("/"+ mytoken + "?")) ) {
 			if ( TG == 1 && url.pathname !== "/" && url.pathname !== "/favicon.ico" ) await sendMessage("#异常访问", request.headers.get('CF-Connecting-IP'), `UA: ${userAgent}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
@@ -86,9 +87,9 @@ export default {
 			</body>
 			</html>
 			`, {
-			  headers: {
-				'Content-Type': 'text/html; charset=UTF-8',
-			  },
+				headers: {
+					'Content-Type': 'text/html; charset=UTF-8',
+				},
 			});
 		} else if ( TG == 1 || !userAgent.includes('subconverter') || !userAgent.includes('null')){
 			await sendMessage("#获取订阅", request.headers.get('CF-Connecting-IP'), `UA: ${userAgentHeader}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
@@ -96,7 +97,7 @@ export default {
 
 		if (userAgent.includes('clash') && !userAgent.includes('nekobox')) {
 			
-			const subconverterUrl = `https://${subconverter}/sub?target=clash&url=${encodeURIComponent(request.url)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
+			const subconverterUrl = `https://${subconverter}/sub?target=clash&url=${encodeURIComponent(sublinks)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
 
 			try {
 				const subconverterResponse = await fetch(subconverterUrl);
@@ -120,7 +121,7 @@ export default {
 				});
 			}
 		} else if (userAgent.includes('sing-box') || userAgent.includes('singbox')) {
-			const subconverterUrl = `https://${subconverter}/sub?target=singbox&url=${encodeURIComponent(request.url)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
+			const subconverterUrl = `https://${subconverter}/sub?target=singbox&url=${encodeURIComponent(sublinks)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=false&fdn=false&sort=false&new_name=true`;
 
 			try {
 				const subconverterResponse = await fetch(subconverterUrl);
