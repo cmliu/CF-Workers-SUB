@@ -64,8 +64,8 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)
 | WARP | https://neko-warp.nloli.xyz/neko_warp.yaml  | 支持 clash 或 singbox 配置格式的WARP配置链接, 链接之间用换行做间隔 | 
 | TGTOKEN | 6894123456:XXXXXXXXXX0qExVsBPUhHDAbXXXXXqWXgBA | 发送TG通知的机器人token | 
 | TGID | 6946912345 | 接收TG通知的账户数字ID | 
-| SUBAPI | api.v1.mk | clash、singbox等 订阅转换后端 | 
-| SUBCONFIG | [https://raw.github.../ACL4SSR_Online_Full_MultiMode.ini](https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_Full_MultiMode.ini) | clash、singbox等 订阅转换配置文件 | 
+| SUBAPI | apiurl.v1.mk | clash、singbox等 订阅转换后端 | 
+| SUBCONFIG | [https://raw.github.../ACL4SSR_Online_MultiCountry.ini](https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_MultiCountry.ini) | clash、singbox等 订阅转换配置文件 | 
 
 
 ## 注意事项
