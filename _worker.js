@@ -108,7 +108,7 @@ export default {
 					method: 'get',
 					headers: {
 						'Accept': 'text/html,application/xhtml+xml,application/xml;',
-						'User-Agent': `${userAgentHeader} cmliu/CF-Workers-SUB`
+						'User-Agent': `v2rayn/6.42 cmliu/CF-Workers-SUB ${userAgentHeader}`
 					},
 					signal: controller.signal // 将AbortController的信号量添加到fetch请求中，以便于需要时可以取消请求
 				}).then(response => {
