@@ -16,8 +16,7 @@ https://hy2sub.pages.dev
 `
 
 //请将机场订阅链接填入上方
-let urls = [];
-let warp = "";// https://subs.zeabur.app/clash , https://neko-warp.nloli.xyz/neko_warp.yaml
+let urls = [];// https://subs.zeabur.app/clash , https://neko-warp.nloli.xyz/neko_warp.yaml
 
 let subconverter = "apiurl.v1.mk"; //在线订阅转换后端，目前使用肥羊的订阅转换功能。支持自建psub 可自行搭建https://github.com/bulianglin/psub
 let subconfig = "https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_MultiCountry.ini"; //订阅配置文件
@@ -35,7 +34,6 @@ export default {
 		subconverter = env.SUBAPI || subconverter;
 		subconfig = env.SUBCONFIG || subconfig;
 		FileName = env.SUBNAME || FileName;
-		warp = env.WARP || warp;
 		MainData = env.LINK || MainData;
 		if(env.LINKSUB) urls = await ADD(env.LINKSUB);
 
@@ -53,8 +51,10 @@ export default {
 		MainData = link;
 		urls = await ADD(linksub);
 		let sublinks = request.url ;
-		if(warp && warp != "") sublinks += '|' + (await ADD(warp)).join('|');
 		//console.log(MainData,urls,sublinks);
+		
+		let warp = env.WARP ;
+		if(warp && warp != "") sublinks += '|' + (await ADD(warp)).join('|');
 
 		if ( !(token == mytoken || url.pathname == ("/"+ mytoken) || url.pathname.includes("/"+ mytoken + "?")) ) {
 			if ( TG == 1 && url.pathname !== "/" && url.pathname !== "/favicon.ico" ) await sendMessage("#异常访问", request.headers.get('CF-Connecting-IP'), `UA: ${userAgent}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
@@ -108,7 +108,7 @@ export default {
 					method: 'get',
 					headers: {
 						'Accept': 'text/html,application/xhtml+xml,application/xml;',
-						'User-Agent': 'v2rayN/6.39 cmliu/CF-Workers-SUB'
+						'User-Agent': `${userAgentHeader} cmliu/CF-Workers-SUB`
 					},
 					signal: controller.signal // 将AbortController的信号量添加到fetch请求中，以便于需要时可以取消请求
 				}).then(response => {
