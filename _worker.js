@@ -14,7 +14,7 @@ let timestamp = 4102329600000;//2099-12-31
 let MainData = `
 vless://b7a392e2-4ef0-4496-90bc-1c37bb234904@cf.090227.xyz:443?encryption=none&security=tls&sni=edgetunnel-2z2.pages.dev&fp=random&type=ws&host=edgetunnel-2z2.pages.dev&path=%2F%3Fed%3D2048#%E5%8A%A0%E5%85%A5%E6%88%91%E7%9A%84%E9%A2%91%E9%81%93t.me%2FCMLiussss%E8%A7%A3%E9%94%81%E6%9B%B4%E5%A4%9A%E4%BC%98%E9%80%89%E8%8A%82%E7%82%B9
 https://sub.xf.free.hr/auto
-https://hy2sub.pages.dev
+https://WARP.fxxk.dedyn.io/auto
 `
 
 let urls = [];
@@ -97,28 +97,38 @@ export default {
 				controller.abort(); // 取消所有请求
 			}, 1618); // 1.618秒后触发
 	
+
+			let 追加UA = 'v2rayn';
+			if (url.searchParams.has('clash')){
+				追加UA = 'clash';
+			} else if(url.searchParams.has('singbox')){
+				追加UA = 'singbox';
+			}
+			
 			try {
 				const responses = await Promise.allSettled(urls.map(url =>
 					fetch(url, {
 						method: 'get',
 						headers: {
 							'Accept': 'text/html,application/xhtml+xml,application/xml;',
-							'User-Agent': `v2rayn cmliu/CF-Workers-SUB ${userAgentHeader}`
+							'User-Agent': `${追加UA} cmliu/CF-Workers-SUB ${userAgentHeader}`
 						},
 						signal: controller.signal // 将AbortController的信号量添加到fetch请求中，以便于需要时可以取消请求
 					}).then(response => {
 						if (response.ok) {
 							return response.text().then(content => {
 								// 这里可以顺便做内容检查
-								if (content.includes('dns') && content.includes('proxies') && content.includes('proxy-groups') && content.includes('rules')) {
+								if (content.includes('dns') && content.includes('proxies') && content.includes('proxy-groups')) {
 									//console.log("clashsub: " + url);
 									订阅转换URL += "|" + url;
 								} else if  (content.includes('dns') && content.includes('outbounds') && content.includes('inbounds')){
 									//console.log("singboxsub: " + url);
 									订阅转换URL += "|" + url;
 								} else {
+									//console.log("未识别" + url);
 									return content; // 保证链式调用中的下一个then可以接收到文本内容
 								}
+								//console.log(content);
 							});
 						} else {
 							return ""; // 如果response.ok为false，返回空字符串
@@ -149,6 +159,7 @@ export default {
 			const uniqueLines = new Set(text.split('\n'));
 			const result = [...uniqueLines].join('\n');
 			console.log(result);
+			
 			const base64Data = btoa(result);
 
 			if (订阅格式 == 'base64'){
@@ -164,7 +175,7 @@ export default {
 			} else if (订阅格式 == 'singbox'){
 				subconverterUrl = `https://${subconverter}/sub?target=singbox&url=${encodeURIComponent(订阅转换URL)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&new_name=true`;
 			}
-
+			console.log(订阅转换URL);
 			try {
 				const subconverterResponse = await fetch(subconverterUrl);
 				
