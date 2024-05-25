@@ -121,7 +121,7 @@ export default {
 								if (content.includes('dns') && content.includes('proxies') && content.includes('proxy-groups')) {
 									//console.log("clashsub: " + url);
 									订阅转换URL += "|" + url;
-								} else if  (content.includes('dns') && content.includes('outbounds') && content.includes('inbounds')){
+								} else if (content.includes('dns') && content.includes('outbounds') && content.includes('inbounds')){
 									//console.log("singboxsub: " + url);
 									订阅转换URL += "|" + url;
 								} else {
@@ -135,14 +135,14 @@ export default {
 						}
 					})
 				));	
-				//console.log(responses);
+			
 				for (const response of responses) {
-					if (response.status === 'fulfilled') {
-						const content = await response.value;
+					if (response.status === 'fulfilled' && response.value) {
+						const content = response.value;
 						req_data += base64Decode(content) + '\n';
 					}
 				}
-
+			
 			} catch (error) {
 				//console.error(error);
 			} finally {
@@ -162,7 +162,7 @@ export default {
 			
 			const base64Data = btoa(result);
 
-			if (订阅格式 == 'base64'){
+			if (订阅格式 == 'base64' || token == fakeToken){
 				return new Response(base64Data ,{
 					headers: { 
 						"content-type": "text/plain; charset=utf-8",
