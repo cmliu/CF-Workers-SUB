@@ -43,7 +43,7 @@ export default {
 		const fakeToken = await MD5MD5(`${mytoken}${timeTemp}`);
 		//console.log(`${fakeUserID}\n${fakeHostName}`); // 打印fakeID
 
-		let UD = Math.floor(((timestamp - Date.now())/timestamp * 99 * 1099511627776 )/2);
+		let UD = Math.floor(((timestamp - Date.now())/timestamp * total * 1099511627776 )/2);
 		total = total * 1099511627776 ;
 		let expire= Math.floor(timestamp / 1000) ;
 		SUBUpdateTime = env.SUBUPTIME || SUBUpdateTime;
