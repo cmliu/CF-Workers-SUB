@@ -1,7 +1,7 @@
 
 // 部署完成后在网址后面加上这个，获取自建节点和机场聚合节点，/?token=auto或/auto或
 
-let mytoken = 'auto'; //可以随便取，或者uuid生成，https://1024tools.com/uuid
+let mytoken = 'ziyongdingyue'; //可以随便取，或者uuid生成，https://1024tools.com/uuid
 let BotToken =''; //可以为空，或者@BotFather中输入/start，/newbot，并关注机器人
 let ChatID =''; //可以为空，或者@userinfobot中获取，/start
 let TG = 0; //小白勿动， 开发者专用，1 为推送所有的访问信息，0 为不推送订阅转换后端的访问信息与异常访问
@@ -12,9 +12,14 @@ let timestamp = 4102329600000;//2099-12-31
 
 //节点链接 + 订阅链接
 let MainData = `
-vless://b7a392e2-4ef0-4496-90bc-1c37bb234904@cf.090227.xyz:443?encryption=none&security=tls&sni=edgetunnel-2z2.pages.dev&fp=random&type=ws&host=edgetunnel-2z2.pages.dev&path=%2F%3Fed%3D2048#%E5%8A%A0%E5%85%A5%E6%88%91%E7%9A%84%E9%A2%91%E9%81%93t.me%2FCMLiussss%E8%A7%A3%E9%94%81%E6%9B%B4%E5%A4%9A%E4%BC%98%E9%80%89%E8%8A%82%E7%82%B9
-https://sub.xf.free.hr/auto
-https://WARP.fxxk.dedyn.io/auto
+https://tj.tj5678.dynv6.net/tj5678?base64
+vless://9daf45bd-123b-41b8-95df-d2cc31ae2b1a@jd.ybyx88.dynv6.net:443?encryption=none&security=tls&sni=jd.ybyx88.dynv6.net&fp=randomized&type=ws&host=jd.ybyx88.dynv6.net&path=%2F%3Fed%3D2048#jd.ybyx88.dynv6.net
+https://kk5678.pages.dev/kk5678?base64
+https://freev2ray.top/V2raygjdsnew20240523.txt
+vless://866853eb-5293-4f09-bf00-e13eb237c655@worker.amcloud.filegear-sg.me:443?encryption=none&security=tls&sni=worker.amcloud.filegear-sg.me&fp=randomized&type=ws&host=worker.amcloud.filegear-sg.me&path=%2F%3Fed%3D2048#worker.amcloud.filegear-sg.me
+https://e8b99cbe-9ebd-4a20-a497-38f4b29f2c98.83b11782-ecae-411f-90c3-2a01bb33260a.gleeze.com/hlly5678.pages.dev/a7feee3e-2efc-4b2d-8239-9e846a3d8bb9?base64
+https://cdn.jsdelivr.us/gh/chengaopan/AutoMergePublicNodes@master/list.txt
+
 `
 
 let urls = [];
