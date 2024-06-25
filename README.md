@@ -2,7 +2,7 @@
 
 ### 这个是一个通过 Cloudflare Workers 搭建，将你任意节点与多个订阅汇聚成专属于你的订阅链接
 
-Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)
+Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)，**感谢[Alice Networks](https://alicenetworks.net/)提供的云服务器维持[CM订阅转换服务](https://sub.fxxk.dedyn.io/)！**
 
 ## Pages 部署方法 [视频教程](https://youtu.be/9npcBXZTSe4)
 ### 1. 部署 Cloudflare Pages：
@@ -88,7 +88,7 @@ vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIuWKoOWFpeaIkeeahOmikemBk3QubWUvQ01MaXVz
 | TOKEN | auto | 快速订阅内置节点的订阅路径地址 /auto | 
 | TGTOKEN | 6894123456:XXXXXXXXXX0qExVsBPUhHDAbXXXXXqWXgBA | 发送TG通知的机器人token | 
 | TGID | 6946912345 | 接收TG通知的账户数字ID | 
-| SUBAPI | apiurl.v1.mk | clash、singbox等 订阅转换后端 | 
+| SUBAPI | subapi.fxxk.dedyn.io | clash、singbox等 订阅转换后端 | 
 | SUBCONFIG | [https://raw.github.../ACL4SSR_Online_MultiCountry.ini](https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_MultiCountry.ini) | clash、singbox等 订阅转换配置文件 | 
 
 
@@ -100,5 +100,5 @@ vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIuWKoOWFpeaIkeeahOmikemBk3QubWUvQ01MaXVz
 [![Stargazers over time](https://starchart.cc/cmliu/CF-Workers-SUB.svg?variant=adaptive)](https://starchart.cc/cmliu/CF-Workers-SUB)
 
 
-# 感谢
-[mianayang](https://github.com/mianayang/myself/blob/main/cf-workers/sub/sub.js)、[ACL4SSR](https://github.com/ACL4SSR/ACL4SSR/tree/master/Clash/config)、[肥羊](https://github.com/youshandefeiyang/sub-web-modify)
+# 致谢
+<a href="https://alicenetworks.net/"><img src="https://alicenetworks.net/templates/lagom2/assets/img/logo/logo_big.194980063.png" width="150" height="75" alt="Alice Networks LTD"/></a>，[mianayang](https://github.com/mianayang/myself/blob/main/cf-workers/sub/sub.js)、[ACL4SSR](https://github.com/ACL4SSR/ACL4SSR/tree/master/Clash/config)、[肥羊](https://github.com/youshandefeiyang/sub-web-modify)
