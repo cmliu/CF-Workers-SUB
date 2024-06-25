@@ -9,7 +9,7 @@ let FileName = 'CF-Workers-SUB';
 let SUBUpdateTime = 6; //自定义订阅更新时间，单位小时
 let total = 99;//TB
 let timestamp = 4102329600000;//2099-12-31
-
+let keywords = ["HK", "tls", "443"];//, 输入你要保留的关键词
 //节点链接 + 订阅链接
 let MainData = `
 vless://b7a392e2-4ef0-4496-90bc-1c37bb234904@cf.090227.xyz:443?encryption=none&security=tls&sni=edgetunnel-2z2.pages.dev&fp=random&type=ws&host=edgetunnel-2z2.pages.dev&path=%2F%3Fed%3D2048#%E5%8A%A0%E5%85%A5%E6%88%91%E7%9A%84%E9%A2%91%E9%81%93t.me%2FCMLiussss%E8%A7%A3%E9%94%81%E6%9B%B4%E5%A4%9A%E4%BC%98%E9%80%89%E8%8A%82%E7%82%B9
@@ -154,10 +154,14 @@ export default {
 			const utf8Encoder = new TextEncoder();
 			const encodedData = utf8Encoder.encode(req_data);
 			const text = String.fromCharCode.apply(null, encodedData);
-			
-			//去重
-			const uniqueLines = new Set(text.split('\n'));
-			const result = [...uniqueLines].join('\n');
+
+			//按关键词保留
+			let array = text.split('\n');
+			const result = array.filter(item => {
+				// Check if item includes all keywords and does not include any excluded keywords
+				return keywords.every(keyword => item.includes(keyword));
+			  }).join('\n');
+
 			console.log(result);
 			
 			const base64Data = btoa(result);
