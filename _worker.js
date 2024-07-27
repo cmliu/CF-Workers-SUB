@@ -13,9 +13,10 @@ let timestamp = 4102329600000;//2099-12-31
 //节点链接 + 订阅链接
 let MainData = `
 https://home.ntun.cn/edge/zdy.txt
+https://www.xn--9kqx68ccs3a.club/api/v1/client/subscribe?token=6f5c5b2f11f405a4a7deae53eb0576a0
 `
 
-let urls = [https://www.xn--9kqx68ccs3a.club/api/v1/client/subscribe?token=6f5c5b2f11f405a4a7deae53eb0576a0];
+let urls = [];
 let subconverter = "subapi-loadbalancing.pages.dev"; //在线订阅转换后端，目前使用CM的订阅转换功能。支持自建psub 可自行搭建https://github.com/bulianglin/psub
 let subconfig = "https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_MultiCountry.ini"; //订阅配置文件
 let subProtocol = 'https';
