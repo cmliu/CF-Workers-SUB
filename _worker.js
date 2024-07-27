@@ -13,6 +13,7 @@ let timestamp = 4102329600000;//2099-12-31
 //节点链接 + 订阅链接
 let MainData = `
 https://home.ntun.cn/edge/zdy.txt
+https://www.xn--9kqx68ccs3a.club/api/v1/client/subscribe?token=6f5c5b2f11f405a4a7deae53eb0576a0
 `
 
 let urls = [];
