@@ -182,7 +182,7 @@ export default {
 			} catch (error) {
 				console.error('处理 URL 时发生错误：', error);
 			}
-
+			if(env.WARP) 订阅转换URL += "|" + (await ADD(env.WARP)).join("|");
 			//修复中文错误
 			const utf8Encoder = new TextEncoder();
 			const encodedData = utf8Encoder.encode(req_data);
