@@ -171,31 +171,7 @@ async function ADD(envadd) {
 
 async function nginx() {
 	const text = `
-	<!DOCTYPE html>
-	<html>
-	<head>
-	<title>Welcome to nginx!</title>
-	<style>
-		body {
-			width: 35em;
-			margin: 0 auto;
-			font-family: Tahoma, Verdana, Arial, sans-serif;
-		}
-	</style>
-	</head>
-	<body>
-	<h1>Welcome to nginx!</h1>
-	<p>If you see this page, the nginx web server is successfully installed and
-	working. Further configuration is required.</p>
-	
-	<p>For online documentation and support please refer to
-	<a href="http://nginx.org/">nginx.org</a>.<br/>
-	Commercial support is available at
-	<a href="http://nginx.com/">nginx.com</a>.</p>
-	
-	<p><em>Thank you for using nginx.</em></p>
-	</body>
-	</html>
+dm1lc3M6Ly9ldzBLSUNBaWRpSTZJQ0l5SWl3TkNpQWdJbkJ6SWpvZ0l2Q2ZoN2p3bjRlc0lPV0ZyT1M4bCtXUHQrKzhtdVdSc2Vla3ZpSXNEUW9nSUNKaFpHUWlPaUFpTVM0eExqRXVNU0lzRFFvZ0lDSndiM0owSWpvZ0lqZ3dJaXdOQ2lBZ0ltbGtJam9nSWprMU5tSXdOVFV6TFRRelkyUXROR1E1WmkxaFpUZzFMV0U0Tm1Rd09UVXhZbVEyTUNJc0RRb2dJQ0poYVdRaU9pQWlNQ0lzRFFvZ0lDSnpZM2tpT2lBaVlYVjBieUlzRFFvZ0lDSnVaWFFpT2lBaWRHTndJaXdOQ2lBZ0luUjVjR1VpT2lBaWJtOXVaU0lzRFFvZ0lDSm9iM04wSWpvZ0lpSXNEUW9nSUNKd1lYUm9Jam9nSWk4aUxBMEtJQ0FpZEd4eklqb2dJaUlzRFFvZ0lDSnpibWtpT2lBaUlpd05DaUFnSW1Gc2NHNGlPaUFpSWl3TkNpQWdJbVp3SWpvZ0lpSU5DbjA9
 	`
 	return text ;
 }
