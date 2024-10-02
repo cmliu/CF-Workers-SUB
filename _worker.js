@@ -1,3 +1,15 @@
+
+// 部署完成后在网址后面加上这个，获取自建节点和机场聚合节点，/?token=auto或/auto或
+
+let mytoken = 'auto'; //可以随便取，或者uuid生成，https://1024tools.com/uuid
+let BotToken =''; //可以为空，或者@BotFather中输入/start，/newbot，并关注机器人
+let ChatID =''; //可以为空，或者@userinfobot中获取，/start
+let TG = 0; //小白勿动， 开发者专用，1 为推送所有的访问信息，0 为不推送订阅转换后端的访问信息与异常访问
+let FileName = 'CF-Workers-SUB';
+let SUBUpdateTime = 6; //自定义订阅更新时间，单位小时
+let total = 99;//TB
+let timestamp = 4102329600000;//2099-12-31
+
 //节点链接 + 订阅链接
 let MainData = `
 vless://b7a392e2-4ef0-4496-90bc-1c37bb234904@cf.090227.xyz:443?encryption=none&security=tls&sni=edgetunnel-2z2.pages.dev&fp=random&type=ws&host=edgetunnel-2z2.pages.dev&path=%2F%3Fed%3D2048#%E5%8A%A0%E5%85%A5%E6%88%91%E7%9A%84%E9%A2%91%E9%81%93t.me%2FCMLiussss%E8%A7%A3%E9%94%81%E6%9B%B4%E5%A4%9A%E4%BC%98%E9%80%89%E8%8A%82%E7%82%B9
@@ -171,7 +183,31 @@ async function ADD(envadd) {
 
 async function nginx() {
 	const text = `
-dm1lc3M6Ly9ldzBLSUNBaWRpSTZJQ0l5SWl3TkNpQWdJbkJ6SWpvZ0l2Q2ZoN2p3bjRlc0lPV0ZyT1M4bCtXUHQrKzhtdVdSc2Vla3ZpSXNEUW9nSUNKaFpHUWlPaUFpTVM0eExqRXVNU0lzRFFvZ0lDSndiM0owSWpvZ0lqZ3dJaXdOQ2lBZ0ltbGtJam9nSWprMU5tSXdOVFV6TFRRelkyUXROR1E1WmkxaFpUZzFMV0U0Tm1Rd09UVXhZbVEyTUNJc0RRb2dJQ0poYVdRaU9pQWlNQ0lzRFFvZ0lDSnpZM2tpT2lBaVlYVjBieUlzRFFvZ0lDSnVaWFFpT2lBaWRHTndJaXdOQ2lBZ0luUjVjR1VpT2lBaWJtOXVaU0lzRFFvZ0lDSm9iM04wSWpvZ0lpSXNEUW9nSUNKd1lYUm9Jam9nSWk4aUxBMEtJQ0FpZEd4eklqb2dJaUlzRFFvZ0lDSnpibWtpT2lBaUlpd05DaUFnSW1Gc2NHNGlPaUFpSWl3TkNpQWdJbVp3SWpvZ0lpSU5DbjA9
+	<!DOCTYPE html>
+	<html>
+	<head>
+	<title>Welcome to nginx!</title>
+	<style>
+		body {
+			width: 35em;
+			margin: 0 auto;
+			font-family: Tahoma, Verdana, Arial, sans-serif;
+		}
+	</style>
+	</head>
+	<body>
+	<h1>Welcome to nginx!</h1>
+	<p>If you see this page, the nginx web server is successfully installed and
+	working. Further configuration is required.</p>
+	
+	<p>For online documentation and support please refer to
+	<a href="http://nginx.org/">nginx.org</a>.<br/>
+	Commercial support is available at
+	<a href="http://nginx.com/">nginx.com</a>.</p>
+	
+	<p><em>Thank you for using nginx.</em></p>
+	</body>
+	</html>
 	`
 	return text ;
 }
