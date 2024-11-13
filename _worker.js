@@ -100,7 +100,7 @@ export default {
 			else if(url.searchParams.has('singbox')) 追加UA = 'singbox';
 			else if(url.searchParams.has('surge')) 追加UA = 'surge';
 			
-			const 请求订阅响应内容 = await getSUB(urls, 追加UA, userAgentHeader);
+			const 请求订阅响应内容 = await getSUB(urls ,request ,追加UA, userAgentHeader);
 			console.log(请求订阅响应内容);
 			req_data += 请求订阅响应内容[0].join('\n');
 			订阅转换URL += "|" + 请求订阅响应内容[1];
@@ -109,14 +109,41 @@ export default {
 			//修复中文错误
 			const utf8Encoder = new TextEncoder();
 			const encodedData = utf8Encoder.encode(req_data);
-			const text = String.fromCharCode.apply(null, encodedData);
-			
+			//const text = String.fromCharCode.apply(null, encodedData);
+			const utf8Decoder = new TextDecoder();
+			const text = utf8Decoder.decode(encodedData);
+
 			//去重
 			const uniqueLines = new Set(text.split('\n'));
 			const result = [...uniqueLines].join('\n');
 			//console.log(result);
 			
-			const base64Data = btoa(result);
+			let base64Data;
+			try {
+				base64Data = btoa(result);
+			} catch (e) {
+				function encodeBase64(data) {
+					const binary = new TextEncoder().encode(data);
+					let base64 = '';
+					const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+				
+					for (let i = 0; i < binary.length; i += 3) {
+						const byte1 = binary[i];
+						const byte2 = binary[i + 1] || 0;
+						const byte3 = binary[i + 2] || 0;
+				
+						base64 += chars[byte1 >> 2];
+						base64 += chars[((byte1 & 3) << 4) | (byte2 >> 4)];
+						base64 += chars[((byte2 & 15) << 2) | (byte3 >> 6)];
+						base64 += chars[byte3 & 63];
+					}
+				
+					const padding = 3 - (binary.length % 3 || 3);
+					return base64.slice(0, base64.length - padding) + '=='.slice(0, padding);
+				}
+				
+				base64Data = encodeBase64(result);
+			}
 
 			if (订阅格式 == 'base64' || token == fakeToken){
 				return new Response(base64Data ,{
@@ -320,65 +347,98 @@ async function proxyURL(proxyURL, url) {
 	return newResponse;
 }
 
-async function getSUB(api, 追加UA, userAgentHeader) {
-	if (!api || api.length === 0) {
-		return [];
-	}
+async function getSUB(api, request, 追加UA, userAgentHeader) {
+  if (!api || api.length === 0) {
+    return [];
+  }
+  let newapi = "";
+  let 订阅转换URLs = "";
+  const controller = new AbortController(); // 创建一个AbortController实例，用于取消请求
+  const timeout = setTimeout(() => {
+    controller.abort(); // 2秒后取消所有请求
+  }, 2000);
 
-	let newapi = "";
-	let 订阅转换URLs = "";
-	const controller = new AbortController(); // 创建一个AbortController实例，用于取消请求
+  try {
+    // 使用Promise.allSettled等待所有API请求完成，无论成功或失败
+    const responses = await Promise.allSettled(api.map(apiUrl => getUrl(request, apiUrl, 追加UA, userAgentHeader).then(response => response.ok ? response.text() : Promise.reject(response))));
 
-	const timeout = setTimeout(() => {
-		controller.abort(); // 2秒后取消所有请求
-	}, 2000);
-	
-	try {
-		// 使用Promise.allSettled等待所有API请求完成，无论成功或失败
-		const responses = await Promise.allSettled(api.map(apiUrl => fetch(apiUrl, {
-			method: 'get', 
-			headers: {
-				'Accept': 'text/html,application/xhtml+xml,application/xml;',
-				'User-Agent': `${追加UA} cmliu/CF-Workers-SUB ${userAgentHeader}`
-			},
-			signal: controller.signal // 将AbortController的信号量添加到fetch请求中
-		}).then(response => response.ok ? response.text() : Promise.reject())));
-	
-		// 遍历所有响应
-		const modifiedResponses = responses.map((response, index) => {
-			// 检查是否请求成功
-			return {
-				status: response.status,
-				value: response.value,
-				apiUrl: api[index] // 将原始的apiUrl添加到返回对象中
-			};
-		});
-	
-		console.log(modifiedResponses); // 输出修改后的响应数组
-	
-		for (const response of modifiedResponses) {
-			// 检查响应状态是否为'fulfilled'
-			if (response.status === 'fulfilled') {
-				const content = await response.value || 'null'; // 获取响应的内容
-				if (content.includes('proxies') && content.includes('proxy-groups')) {
-					// Clash 配置
-					订阅转换URLs += "|" + response.apiUrl;
-				} else if (content.includes('outbounds') && content.includes('inbounds')){
-					// Singbox 配置
-					订阅转换URLs += "|" + response.apiUrl;
-				} else {
-					newapi += base64Decode(content) + '\n'; // 解码并追加内容
-				}
-			}
-		}
-	} catch (error) {
-		console.error(error); // 捕获并输出错误信息
-	} finally {
-		clearTimeout(timeout); // 清除定时器
-	}
-	
-	const 订阅内容 = await ADD(newapi);
+    // 遍历所有响应
+    const modifiedResponses = responses.map((response, index) => {
+      // 检查是否请求成功
+      if (response.status === 'rejected') {
+        const reason = response.reason;
+        if (reason && reason.name === 'AbortError') {
+          return {
+            status: '超时',
+            value: null,
+            apiUrl: api[index] // 将原始的apiUrl添加到返回对象中
+          };
+        }
+        console.error(`请求失败: ${api[index]}, 错误信息: ${reason.status} ${reason.statusText}`);
+        return {
+          status: '请求失败',
+          value: null,
+          apiUrl: api[index] // 将原始的apiUrl添加到返回对象中
+        };
+      }
+      return {
+        status: response.status,
+        value: response.value,
+        apiUrl: api[index] // 将原始的apiUrl添加到返回对象中
+      };
+    });
 
-	// 返回处理后的结果
-	return [订阅内容,订阅转换URLs];
+    console.log(modifiedResponses); // 输出修改后的响应数组
+
+    for (const response of modifiedResponses) {
+      // 检查响应状态是否为'fulfilled'
+      if (response.status === 'fulfilled') {
+        const content = await response.value || 'null'; // 获取响应的内容
+        if (content.includes('proxies') && content.includes('proxy-groups')) {
+          // Clash 配置
+          订阅转换URLs += "|" + response.apiUrl;
+        } else if (content.includes('outbounds') && content.includes('inbounds')) {
+          // Singbox 配置
+          订阅转换URLs += "|" + response.apiUrl;
+        } else {
+          if (content.includes('://')) {
+            newapi += content + '\n';
+          } else {
+            newapi += base64Decode(content) + '\n'; // 解码并追加内容
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.error(error); // 捕获并输出错误信息
+  } finally {
+    clearTimeout(timeout); // 清除定时器
+  }
+
+  const 订阅内容 = await ADD(newapi);
+  // 返回处理后的结果
+  return [订阅内容, 订阅转换URLs];
+}
+
+async function getUrl(request, targetUrl, 追加UA, userAgentHeader) {
+  // 设置自定义 User-Agent
+  const newHeaders = new Headers(request.headers);
+  newHeaders.set("User-Agent", `v2rayN/${追加UA} cmliu/CF-Workers-SUB ${userAgentHeader}`);
+
+  // 构建新的请求对象
+  const modifiedRequest = new Request(targetUrl, {
+    method: request.method,
+    headers: newHeaders,
+    body: request.method === "GET" ? null : request.body,
+    redirect: "follow"
+  });
+
+  // 输出请求的详细信息
+  console.log(`请求URL: ${targetUrl}`);
+  console.log(`请求头: ${JSON.stringify([...newHeaders])}`);
+  console.log(`请求方法: ${request.method}`);
+  console.log(`请求体: ${request.method === "GET" ? null : request.body}`);
+
+  // 发送请求并返回响应
+  return fetch(modifiedRequest);
 }
