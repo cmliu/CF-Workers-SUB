@@ -84,11 +84,12 @@ vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogIuWKoOWFpeaIkeeahOmikemBk3QubWUvQ01MaXVz
 ## 变量说明
 | 变量名 | 示例 | 备注 | 
 |--------|---------|-----|
-| LINK | vless://b7a39... vmess://ew0K... https://sub...  | 可同时放入多个节点链接与多个订阅链接, 链接之间用换行做间隔 | 
-| TOKEN | auto | 快速订阅内置节点的订阅路径地址 /auto | 
-| TGTOKEN | 6894123456:XXXXXXXXXX0qExVsBPUhHDAbXXXXXqWXgBA | 发送TG通知的机器人token | 
-| TGID | 6946912345 | 接收TG通知的账户数字ID | 
-| SUBAPI | subapi.fxxk.dedyn.io | clash、singbox等 订阅转换后端 | 
+| LINK | `vless://b7a39...` `vmess://ew0K...` `https://sub...`  | 可同时放入多个节点链接与多个订阅链接, 链接之间用换行做间隔 | 
+| TOKEN | `auto` | 快速订阅内置节点的订阅路径地址 /auto | 
+| TGTOKEN | `6894123456:XXXXXXXXXX0qExVsBPUhHDAbXXXXXqWXgBA` | 发送TG通知的机器人token | 
+| TGID | `6946912345` | 接收TG通知的账户数字ID | 
+| SUBNAME | `CF-Workers-SUB` | 订阅名称 |
+| SUBAPI | `subapi.fxxk.dedyn.io` | clash、singbox等 订阅转换后端 | 
 | SUBCONFIG | [https://raw.github.../ACL4SSR_Online_MultiCountry.ini](https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_MultiCountry.ini) | clash、singbox等 订阅转换配置文件 | 
 
 
