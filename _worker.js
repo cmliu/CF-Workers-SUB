@@ -30,7 +30,7 @@ export default {
 		mytoken = env.TOKEN || mytoken;
 		BotToken = env.TGTOKEN || BotToken;
 		ChatID = env.TGID || ChatID; 
-		TG =  env.TG || TG; 
+		TG = env.TG || TG; 
 		subconverter = env.SUBAPI || subconverter;
 		if( subconverter.includes("http://") ){
 			subconverter = subconverter.split("//")[1];
@@ -88,6 +88,10 @@ export default {
 				订阅格式 = 'singbox';
 			} else if (userAgent.includes('surge') || ( url.searchParams.has('surge') && !userAgent.includes('subconverter'))){
 				订阅格式 = 'surge';
+			} else if (userAgent.includes('quantumult%20x') || (url.searchParams.has('quanx') && !userAgent.includes('subconverter'))){
+				订阅格式 = 'quanx';
+			} else if (userAgent.includes('loon') || (url.searchParams.has('loon') && !userAgent.includes('subconverter'))){
+				订阅格式 = 'loon';
 			}
 
 			let subconverterUrl ;
@@ -99,8 +103,10 @@ export default {
 			if (url.searchParams.has('clash')) 追加UA = 'clash';
 			else if(url.searchParams.has('singbox')) 追加UA = 'singbox';
 			else if(url.searchParams.has('surge')) 追加UA = 'surge';
+			else if(url.searchParams.has('quanx')) 追加UA = 'Quantumult%20X';
+			else if(url.searchParams.has('loon')) 追加UA = 'Loon';
 			
-			const 请求订阅响应内容 = await getSUB(urls, 追加UA, userAgentHeader);
+			const 请求订阅响应内容 = await getSUB(urls ,request ,追加UA, userAgentHeader);
 			console.log(请求订阅响应内容);
 			req_data += 请求订阅响应内容[0].join('\n');
 			订阅转换URL += "|" + 请求订阅响应内容[1];
@@ -109,14 +115,41 @@ export default {
 			//修复中文错误
 			const utf8Encoder = new TextEncoder();
 			const encodedData = utf8Encoder.encode(req_data);
-			const text = String.fromCharCode.apply(null, encodedData);
-			
+			//const text = String.fromCharCode.apply(null, encodedData);
+			const utf8Decoder = new TextDecoder();
+			const text = utf8Decoder.decode(encodedData);
+
 			//去重
 			const uniqueLines = new Set(text.split('\n'));
 			const result = [...uniqueLines].join('\n');
 			//console.log(result);
 			
-			const base64Data = btoa(result);
+			let base64Data;
+			try {
+				base64Data = btoa(result);
+			} catch (e) {
+				function encodeBase64(data) {
+					const binary = new TextEncoder().encode(data);
+					let base64 = '';
+					const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+				
+					for (let i = 0; i < binary.length; i += 3) {
+						const byte1 = binary[i];
+						const byte2 = binary[i + 1] || 0;
+						const byte3 = binary[i + 2] || 0;
+				
+						base64 += chars[byte1 >> 2];
+						base64 += chars[((byte1 & 3) << 4) | (byte2 >> 4)];
+						base64 += chars[((byte2 & 15) << 2) | (byte3 >> 6)];
+						base64 += chars[byte3 & 63];
+					}
+				
+					const padding = 3 - (binary.length % 3 || 3);
+					return base64.slice(0, base64.length - padding) + '=='.slice(0, padding);
+				}
+				
+				base64Data = encodeBase64(result);
+			}
 
 			if (订阅格式 == 'base64' || token == fakeToken){
 				return new Response(base64Data ,{
@@ -132,6 +165,10 @@ export default {
 				subconverterUrl = `${subProtocol}://${subconverter}/sub?target=singbox&url=${encodeURIComponent(订阅转换URL)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&new_name=true`;
 			} else if (订阅格式 == 'surge'){
 				subconverterUrl = `${subProtocol}://${subconverter}/sub?target=surge&url=${encodeURIComponent(订阅转换URL)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&new_name=true`;
+			} else if (订阅格式 == 'quanx'){
+				subconverterUrl = `${subProtocol}://${subconverter}/sub?target=quanx&url=${encodeURIComponent(订阅转换URL)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&udp=true`;
+			} else if (订阅格式 == 'loon'){
+				subconverterUrl = `${subProtocol}://${subconverter}/sub?target=loon&url=${encodeURIComponent(订阅转换URL)}&insert=false&config=${encodeURIComponent(subconfig)}&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false`;
 			}
 			//console.log(订阅转换URL);
 			try {
@@ -172,7 +209,7 @@ export default {
 };
 
 async function ADD(envadd) {
-	var addtext = envadd.replace(/[	"'|\r\n]+/g, ',').replace(/,+/g, ',');  // 将空格、双引号、单引号和换行符替换为逗号
+	var addtext = envadd.replace(/[	"'|\r\n]+/g, ',').replace(/,+/g, ',');	// 将空格、双引号、单引号和换行符替换为逗号
 	//console.log(addtext);
 	if (addtext.charAt(0) == ',') addtext = addtext.slice(1);
 	if (addtext.charAt(addtext.length -1) == ',') addtext = addtext.slice(0, addtext.length - 1);
@@ -217,7 +254,7 @@ function base64Decode(str) {
 
 async function MD5MD5(text) {
 	const encoder = new TextEncoder();
-  
+	
 	const firstPass = await crypto.subtle.digest('MD5', encoder.encode(text));
 	const firstPassArray = Array.from(new Uint8Array(firstPass));
 	const firstHex = firstPassArray.map(b => b.toString(16).padStart(2, '0')).join('');
@@ -225,7 +262,7 @@ async function MD5MD5(text) {
 	const secondPass = await crypto.subtle.digest('MD5', encoder.encode(firstHex.slice(7, 27)));
 	const secondPassArray = Array.from(new Uint8Array(secondPass));
 	const secondHex = secondPassArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  
+	
 	return secondHex.toLowerCase();
 }
 
@@ -294,54 +331,66 @@ async function proxyURL(proxyURL, url) {
 	return newResponse;
 }
 
-async function getSUB(api, 追加UA, userAgentHeader) {
+async function getSUB(api, request, 追加UA, userAgentHeader) {
 	if (!api || api.length === 0) {
 		return [];
 	}
-
 	let newapi = "";
 	let 订阅转换URLs = "";
+	let 异常订阅 = "";
 	const controller = new AbortController(); // 创建一个AbortController实例，用于取消请求
-
 	const timeout = setTimeout(() => {
 		controller.abort(); // 2秒后取消所有请求
 	}, 2000);
-	
+
 	try {
 		// 使用Promise.allSettled等待所有API请求完成，无论成功或失败
-		const responses = await Promise.allSettled(api.map(apiUrl => fetch(apiUrl, {
-			method: 'get', 
-			headers: {
-				'Accept': 'text/html,application/xhtml+xml,application/xml;',
-				'User-Agent': `${追加UA} cmliu/CF-Workers-SUB ${userAgentHeader}`
-			},
-			signal: controller.signal // 将AbortController的信号量添加到fetch请求中
-		}).then(response => response.ok ? response.text() : Promise.reject())));
-	
+		const responses = await Promise.allSettled(api.map(apiUrl => getUrl(request, apiUrl, 追加UA, userAgentHeader).then(response => response.ok ? response.text() : Promise.reject(response))));
+
 		// 遍历所有响应
 		const modifiedResponses = responses.map((response, index) => {
 			// 检查是否请求成功
+			if (response.status === 'rejected') {
+				const reason = response.reason;
+				if (reason && reason.name === 'AbortError') {
+					return {
+						status: '超时',
+						value: null,
+						apiUrl: api[index] // 将原始的apiUrl添加到返回对象中
+					};
+				}
+				console.error(`请求失败: ${api[index]}, 错误信息: ${reason.status} ${reason.statusText}`);
+				return {
+					status: '请求失败',
+					value: null,
+					apiUrl: api[index] // 将原始的apiUrl添加到返回对象中
+				};
+			}
 			return {
 				status: response.status,
 				value: response.value,
 				apiUrl: api[index] // 将原始的apiUrl添加到返回对象中
 			};
 		});
-	
+
 		console.log(modifiedResponses); // 输出修改后的响应数组
-	
+
 		for (const response of modifiedResponses) {
 			// 检查响应状态是否为'fulfilled'
 			if (response.status === 'fulfilled') {
 				const content = await response.value || 'null'; // 获取响应的内容
 				if (content.includes('proxies') && content.includes('proxy-groups')) {
-					// Clash 配置
-					订阅转换URLs += "|" + response.apiUrl;
-				} else if (content.includes('outbounds') && content.includes('inbounds')){
-					// Singbox 配置
-					订阅转换URLs += "|" + response.apiUrl;
-				} else {
+					订阅转换URLs += "|" + response.apiUrl; // Clash 配置
+				} else if (content.includes('outbounds') && content.includes('inbounds')) {
+					订阅转换URLs += "|" + response.apiUrl; // Singbox 配置
+				} else if (content.includes('://')) {
+					newapi += content + '\n'; // 追加内容
+				} else if (isValidBase64(content)){
 					newapi += base64Decode(content) + '\n'; // 解码并追加内容
+				} else {
+					const 异常订阅LINK = `trojan://CMLiussss@127.0.0.1:8888?security=tls&allowInsecure=1&type=tcp&headerType=none#%E5%BC%82%E5%B8%B8%E8%AE%A2%E9%98%85%20${response.apiUrl.split('://')[1].split('/')[0]}`;
+					console.log(异常订阅LINK);
+					异常订阅 += `${异常订阅LINK}\n`;
 				}
 			}
 		}
@@ -350,9 +399,36 @@ async function getSUB(api, 追加UA, userAgentHeader) {
 	} finally {
 		clearTimeout(timeout); // 清除定时器
 	}
-	
-	const 订阅内容 = await ADD(newapi);
 
+	const 订阅内容 = await ADD(newapi + 异常订阅); // 将处理后的内容转换为数组
 	// 返回处理后的结果
-	return [订阅内容,订阅转换URLs];
+	return [订阅内容, 订阅转换URLs];
+}
+
+async function getUrl(request, targetUrl, 追加UA, userAgentHeader) {
+	// 设置自定义 User-Agent
+	const newHeaders = new Headers(request.headers);
+	newHeaders.set("User-Agent", `v2rayN/${追加UA} cmliu/CF-Workers-SUB ${userAgentHeader}`);
+
+	// 构建新的请求对象
+	const modifiedRequest = new Request(targetUrl, {
+		method: request.method,
+		headers: newHeaders,
+		body: request.method === "GET" ? null : request.body,
+		redirect: "follow"
+	});
+
+	// 输出请求的详细信息
+	console.log(`请求URL: ${targetUrl}`);
+	console.log(`请求头: ${JSON.stringify([...newHeaders])}`);
+	console.log(`请求方法: ${request.method}`);
+	console.log(`请求体: ${request.method === "GET" ? null : request.body}`);
+
+	// 发送请求并返回响应
+	return fetch(modifiedRequest);
+}
+
+function isValidBase64(str) {
+	const base64Regex = /^[A-Za-z0-9+/=]+$/;
+	return base64Regex.test(str);
 }
