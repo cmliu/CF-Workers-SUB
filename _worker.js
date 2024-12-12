@@ -40,12 +40,7 @@ export default {
 		}
 		subconfig = env.SUBCONFIG || subconfig;
 		FileName = env.SUBNAME || FileName;
-		if (env.KV) {
-			MainData = await env.KV.get('/LINK.txt') || MainData;
-		} else {
-			MainData = env.LINK || MainData;
-			if (env.LINKSUB) urls = await ADD(env.LINKSUB);
-		}
+
 		const currentDate = new Date();
 		currentDate.setHours(0, 0, 0, 0); 
 		const timeTemp = Math.ceil(currentDate.getTime() / 1000);
@@ -56,19 +51,6 @@ export default {
 		total = total * 1099511627776 ;
 		let expire= Math.floor(timestamp / 1000) ;
 		SUBUpdateTime = env.SUBUPTIME || SUBUpdateTime;
-
-		let 重新汇总所有链接 = await ADD(MainData + '\n' + urls.join('\n'));
-		let 自建节点 ="";
-		let 订阅链接 ="";
-		for (let x of 重新汇总所有链接) {
-			if (x.toLowerCase().startsWith('http')) {
-				订阅链接 += x + '\n';
-			} else {
-				自建节点 += x + '\n';
-			}
-		}
-		MainData = 自建节点;
-		urls = await ADD(订阅链接);
 
 		if ( !(token == mytoken || token == fakeToken || url.pathname == ("/"+ mytoken) || url.pathname.includes("/"+ mytoken + "?")) ) {
 			if ( TG == 1 && url.pathname !== "/" && url.pathname !== "/favicon.ico" ) await sendMessage(`#异常访问 ${FileName}`, request.headers.get('CF-Connecting-IP'), `UA: ${userAgent}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
@@ -81,12 +63,31 @@ export default {
 				},
 			});
 		} else {
-			if (env.KV && userAgent.includes('mozilla') && !url.search){
-				await sendMessage(`#编辑订阅 ${FileName}`, request.headers.get('CF-Connecting-IP'), `UA: ${userAgentHeader}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
-				return await KV(request, env, '/LINK.txt');
+			if (env.KV) {
+				if (userAgent.includes('mozilla') && !url.search){
+					await sendMessage(`#编辑订阅 ${FileName}`, request.headers.get('CF-Connecting-IP'), `UA: ${userAgentHeader}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
+					return await KV(request, env, '/LINK.txt');
+				} else {
+					MainData = await env.KV.get('/LINK.txt') || MainData;
+				}
 			} else {
-				await sendMessage(`#获取订阅 ${FileName}`, request.headers.get('CF-Connecting-IP'), `UA: ${userAgentHeader}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
+				MainData = env.LINK || MainData;
+				if (env.LINKSUB) urls = await ADD(env.LINKSUB);
 			}
+			let 重新汇总所有链接 = await ADD(MainData + '\n' + urls.join('\n'));
+			let 自建节点 ="";
+			let 订阅链接 ="";
+			for (let x of 重新汇总所有链接) {
+				if (x.toLowerCase().startsWith('http')) {
+					订阅链接 += x + '\n';
+				} else {
+					自建节点 += x + '\n';
+				}
+			}
+			MainData = 自建节点;
+			urls = await ADD(订阅链接);
+			await sendMessage(`#获取订阅 ${FileName}`, request.headers.get('CF-Connecting-IP'), `UA: ${userAgentHeader}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
+
 			let 订阅格式 = 'base64';
 			if (userAgent.includes('null') || userAgent.includes('subconverter') || userAgent.includes('nekobox') || userAgent.includes(('CF-Workers-SUB').toLowerCase())){
 				订阅格式 = 'base64';
@@ -517,7 +518,7 @@ async function KV(request, env, txt = '/ADD.txt') {
 				}
 				.editor {
 					width: 100%;
-					height: 420px;
+					height: 380px;
 					margin: 20px 0;
 					padding: 15px;
 					box-sizing: border-box;
