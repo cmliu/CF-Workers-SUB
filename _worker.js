@@ -64,11 +64,12 @@ export default {
 			});
 		} else {
 			if (env.KV) {
+				await 迁移地址列表(env, 'LINK.txt');
 				if (userAgent.includes('mozilla') && !url.search){
 					await sendMessage(`#编辑订阅 ${FileName}`, request.headers.get('CF-Connecting-IP'), `UA: ${userAgentHeader}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
-					return await KV(request, env, '/LINK.txt');
+					return await KV(request, env, 'LINK.txt');
 				} else {
-					MainData = await env.KV.get('/LINK.txt') || MainData;
+					MainData = await env.KV.get('LINK.txt') || MainData;
 				}
 			} else {
 				MainData = env.LINK || MainData;
@@ -468,7 +469,21 @@ function isValidBase64(str) {
 	return base64Regex.test(str);
 }
 
-async function KV(request, env, txt = '/ADD.txt') {
+async function 迁移地址列表(env, txt = 'ADD.txt') {
+	const 旧数据 = await env.KV.get(`/${txt}`);
+	const 新数据 = await env.KV.get(txt);
+	
+	if (旧数据 && !新数据) {
+		// 写入新位置
+		await env.KV.put(txt, 旧数据);
+		// 删除旧数据
+		await env.KV.delete(`/${txt}`);
+		return true;
+	}
+	return false;
+}
+
+async function KV(request, env, txt = 'ADD.txt') {
 	const url = new URL(request.url);
 	try {
 		// POST请求处理
