@@ -580,15 +580,6 @@ async function KV(request, env, txt = '/ADD.txt') {
 					<br>
 					loon订阅地址:<br>
 					<a href="javascript:void(0)" onclick="copyToClipboard('https://${url.hostname}/${mytoken}?loon')" style="color:blue;text-decoration:underline;cursor:pointer;">https://${url.hostname}/${mytoken}?loon</a><br>
-					<script>
-					function copyToClipboard(text) {
-						navigator.clipboard.writeText(text).then(() => {
-							alert('已复制到剪贴板');
-						}).catch(err => {
-							console.error('复制失败:', err);
-						});
-					}
-					</script>
 					---------------------------------------------------------------<br>
 					################################################################<br>
 					<br>
@@ -599,8 +590,7 @@ async function KV(request, env, txt = '/ADD.txt') {
 							placeholder="${decodeURIComponent(atob('TElOSyVFNyVBNCVCQSVFNCVCRSU4QiVFRiVCQyU5QQp2bGVzcyUzQSUyRiUyRmI3YTM5MmUyLTRlZjAtNDQ5Ni05MGJjLTFjMzdiYjIzNDkwNCU0MGNmLjA5MDIyNy54eXolM0E0NDMlM0ZlbmNyeXB0aW9uJTNEbm9uZSUyNnNlY3VyaXR5JTNEdGxzJTI2c25pJTNEZWRnZXR1bm5lbC0yejIucGFnZXMuZGV2JTI2ZnAlM0RyYW5kb20lMjZ0eXBlJTNEd3MlMjZob3N0JTNEZWRnZXR1bm5lbC0yejIucGFnZXMuZGV2JTI2cGF0aCUzRCUyNTJGJTI1M0ZlZCUyNTNEMjA0OCUyMyUyNUU1JTI1OEElMjVBMCUyNUU1JTI1ODUlMjVBNSUyNUU2JTI1ODglMjU5MSUyNUU3JTI1OUElMjU4NCUyNUU5JTI1QTIlMjU5MSUyNUU5JTI1ODElMjU5M3QubWUlMjUyRkNNTGl1c3NzcyUyNUU4JTI1QTclMjVBMyUyNUU5JTI1OTQlMjU4MSUyNUU2JTI1OUIlMjVCNCUyNUU1JTI1QTQlMjU5QSUyNUU0JTI1QkMlMjU5OCUyNUU5JTI1ODAlMjU4OSUyNUU4JTI1OEElMjU4MiUyNUU3JTI1ODIlMjVCOQp0cm9qYW4lM0ElMkYlMkZDTUxpdXNzc3MlNDAxOTguNjIuNjIuNTIlM0E0NDMlM0ZzZWN1cml0eSUzRHRscyUyNnNuaSUzRHhuLS1paHFyNmZyeThhdnBkbjc5YmV0Yy54bi0tY20tbms3YzAyNWE5dXVhMjYzNWNlc3UudXMua2clMjZhbHBuJTNEaHR0cCUyNTJGMS4xJTI2ZnAlM0RyYW5kb21pemVkJTI2YWxsb3dJbnNlY3VyZSUzRDElMjZ0eXBlJTNEd3MlMjZob3N0JTNEeG4tLWlocXI2ZnJ5OGF2cGRuNzliZXRjLnhuLS1jbS1uazdjMDI1YTl1dWEyNjM1Y2VzdS51cy5rZyUyNnBhdGglM0QlMjUyRiUyNTNGZWQlMjUzRDI1NjAlMjNVUwpzcyUzQSUyRiUyRllXVnpMVEkxTmkxalptSTZZVzFoZW05dWMydHlNRFUlMjUzRCU0MDEzLjI1MC4xMTAuNTYlM0E0NDMlMjNTRwoKJUU2JUIzJUE4JUU2JTg0JThGJUVGJUJDJTlBJUU0JUI4JTgwJUU4JUExJThDJUU0JUI4JTgwJUU0JUI4JUFBJUU4JThBJTgyJUU3JTgyJUI5JUU5JTkzJUJFJUU2JThFJUE1JUU1JThEJUIzJUU1JThGJUFGCgoKJUU4JUFFJUEyJUU5JTk4JTg1JUU5JTkzJUJFJUU2JThFJUE1JUU3JUE0JUJBJUU0JUJFJThCJUVGJUJDJTlBCmh0dHBzJTNBJTJGJTJGc3ViLnhmLmZyZWUuaHIlMkZhdXRvCgolRTYlQjMlQTglRTYlODQlOEYlRUYlQkMlOUElRTQlQjglODAlRTglQTElOEMlRTQlQjglODAlRTYlOUQlQTElRTglQUUlQTIlRTklOTglODUlRTklOTMlQkUlRTYlOEUlQTUlRTUlOEQlQjMlRTUlOEYlQUY='))}"
 							id="content">${content}</textarea>
 						<div class="save-container">
-							<!-- <button class="back-btn" onclick="goBack()">返回配置页</button> -->
-							<button class="save-btn" onclick="saveContent()">保存</button>
+							<button class="save-btn" onclick="saveContent(this)">保存</button>
 							<span class="save-status" id="saveStatus"></span>
 						</div>
 						` : '<p>未绑定KV空间</p>'}
@@ -608,8 +598,16 @@ async function KV(request, env, txt = '/ADD.txt') {
 					<br>
 					################################################################<br>
 					${decodeURIComponent(atob('dGVsZWdyYW0lMjAlRTQlQkElQTQlRTYlQjUlODElRTclQkUlQTQlMjAlRTYlOEElODAlRTYlOUMlQUYlRTUlQTQlQTclRTQlQkQlQUMlN0UlRTUlOUMlQTglRTclQkElQkYlRTUlOEYlOTElRTclODklOEMhJTNDYnIlM0UKJTNDYSUyMGhyZWYlM0QlMjdodHRwcyUzQSUyRiUyRnQubWUlMkZDTUxpdXNzc3MlMjclM0VodHRwcyUzQSUyRiUyRnQubWUlMkZDTUxpdXNzc3MlM0MlMkZhJTNFJTNDYnIlM0UKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tJTNDYnIlM0UKZ2l0aHViJTIwJUU5JUExJUI5JUU3JTlCJUFFJUU1JTlDJUIwJUU1JTlEJTgwJTIwU3RhciFTdGFyIVN0YXIhISElM0NiciUzRQolM0NhJTIwaHJlZiUzRCUyN2h0dHBzJTNBJTJGJTJGZ2l0aHViLmNvbSUyRmNtbGl1JTJGQ0YtV29ya2Vycy1TVUIlMjclM0VodHRwcyUzQSUyRiUyRmdpdGh1Yi5jb20lMkZjbWxpdSUyRkNGLVdvcmtlcnMtU1VCJTNDJTJGYSUzRSUzQ2JyJTNFCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSUzQ2JyJTNFCiUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMyUyMw=='))}
-					
+					<br><br>UA: ${request.headers.get('User-Agent')}
 					<script>
+					function copyToClipboard(text) {
+						navigator.clipboard.writeText(text).then(() => {
+							alert('已复制到剪贴板');
+						}).catch(err => {
+							console.error('复制失败:', err);
+						});
+					}
+						
 					if (document.querySelector('.editor')) {
 						let timer;
 						const textarea = document.getElementById('content');
@@ -626,20 +624,95 @@ async function KV(request, env, txt = '/ADD.txt') {
 							textarea.value = text.replace(/：/g, ':');
 						}
 						
-						function saveContent() {
-							replaceFullwidthColon();
-							const newContent = textarea.value;
-							if (newContent !== originalContent) {
-								fetch(window.location.href, {
-									method: 'POST',
-									body: newContent
-								}).then(() => {
-									const now = new Date().toLocaleString();
-									document.title = \`编辑已保存 \${now}\`;
-									document.getElementById('saveStatus').textContent = \`已保存 \${now}\`;
-								}).catch(error => {
-									document.getElementById('saveStatus').textContent = \`保存失败: \${error.message}\`;
-								});
+						function saveContent(button) {
+							try {
+								const updateButtonText = (step) => {
+									button.textContent = \`保存中: \${step}\`;
+								};
+								// 检测是否为iOS设备
+								const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+								
+								// 仅在非iOS设备上执行replaceFullwidthColon
+								if (!isIOS) {
+									replaceFullwidthColon();
+								}
+								updateButtonText('开始保存');
+								button.disabled = true;
+
+								// 获取textarea内容和原始内容
+								const textarea = document.getElementById('content');
+								if (!textarea) {
+									throw new Error('找不到文本编辑区域');
+								}
+
+								updateButtonText('获取内容');
+								let newContent;
+								let originalContent;
+								try {
+									newContent = textarea.value || '';
+									originalContent = textarea.defaultValue || '';
+								} catch (e) {
+									console.error('获取内容错误:', e);
+									throw new Error('无法获取编辑内容');
+								}
+
+								updateButtonText('准备状态更新函数');
+								const updateStatus = (message, isError = false) => {
+									const statusElem = document.getElementById('saveStatus');
+									if (statusElem) {
+										statusElem.textContent = message;
+										statusElem.style.color = isError ? 'red' : '#666';
+									}
+								};
+
+								updateButtonText('准备按钮重置函数');
+								const resetButton = () => {
+									button.textContent = '保存';
+									button.disabled = false;
+								};
+
+								if (newContent !== originalContent) {
+									updateButtonText('发送保存请求');
+									fetch(window.location.href, {
+										method: 'POST',
+										body: newContent,
+										headers: {
+											'Content-Type': 'text/plain;charset=UTF-8'
+										},
+										cache: 'no-cache'
+									})
+									.then(response => {
+										updateButtonText('检查响应状态');
+										if (!response.ok) {
+											throw new Error(\`HTTP error! status: \${response.status}\`);
+										}
+										updateButtonText('更新保存状态');
+										const now = new Date().toLocaleString();
+										document.title = \`编辑已保存 \${now}\`;
+										updateStatus(\`已保存 \${now}\`);
+									})
+									.catch(error => {
+										updateButtonText('处理错误');
+										console.error('Save error:', error);
+										updateStatus(\`保存失败: \${error.message}\`, true);
+									})
+									.finally(() => {
+										resetButton();
+									});
+								} else {
+									updateButtonText('检查内容变化');
+									updateStatus('内容未变化');
+									resetButton();
+								}
+							} catch (error) {
+								console.error('保存过程出错:', error);
+								button.textContent = '保存';
+								button.disabled = false;
+								const statusElem = document.getElementById('saveStatus');
+								if (statusElem) {
+									statusElem.textContent = \`错误: \${error.message}\`;
+									statusElem.style.color = 'red';
+								}
 							}
 						}
 		
