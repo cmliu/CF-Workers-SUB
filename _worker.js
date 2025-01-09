@@ -12,8 +12,13 @@ let timestamp = 4102329600000;//2099-12-31
 
 //节点链接 + 订阅链接
 let MainData = `
-https://raw.githubusercontent.com/mahdibland/ShadowsocksAggregator/master/sub/splitted/trojan.txt
 https://raw.githubusercontent.com/mfuu/v2ray/master/v2ray
+https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list_raw.txt
+https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt
+https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2
+https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/airport_sub_merge.txt
+https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
+https://raw.githubusercontent.com/Pawdroid/Free-servers/refs/heads/main/sub
 `
 
 let urls = [];
@@ -198,7 +203,7 @@ export default {
 				if (订阅格式 == 'clash') subConverterContent = await clashFix(subConverterContent);
 				return new Response(subConverterContent, {
 					headers: {
-						"Content-Disposition": `attachment; filename*=utf-8''${encodeURIComponent(FileName)}; filename=${FileName}`,
+						"Content-Disposition": `attachment; filename*=utf-8''${encodeURIComponent(FileName)}`,
 						"content-type": "text/plain; charset=utf-8",
 						"Profile-Update-Interval": `${SUBUpdateTime}`,
 						//"Subscription-Userinfo": `upload=${UD}; download=${UD}; total=${total}; expire=${expire}`,
