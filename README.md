@@ -1,10 +1,28 @@
-# 定制汇聚订阅 CF-Workers-SUB
-![定制汇聚订阅 CF-Workers-SUB](./sub.png)
-### 这个是一个通过 Cloudflare Workers 搭建，将你任意节点与多个订阅汇聚成专属于你的订阅链接
+# ⚙ 自建汇聚订阅 CF-Workers-SUB
 
-Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)，**感谢[Alice Networks](https://alicenetworks.net/)提供的云服务器维持[CM订阅转换服务](https://sub.fxxk.dedyn.io/)！**
+![自建汇聚订阅 CF-Workers-SUB](./sub.png)
 
-## Pages 部署方法 [视频教程](https://youtu.be/9npcBXZTSe4)
+> 这是一个将多个节点和订阅合并为单一链接的工具，支持自动适配与自定义分流，简化了订阅管理。
+
+## 🛠 功能特点
+1. **节点链接自动转换成base64订阅链接：** 这是最基础的功能，可以将您的节点自动转换为base64格式的订阅链接；
+2. **将多个base64订阅汇聚成一个订阅链接：** 可以将多个订阅（例如不同的机场）合并成一个订阅，只需使用一个订阅地址即可获取所有节点；
+3. **自动适配不同梯子的格式订阅链接：** 依托[订阅转换](https://sub.fxxk.dedyn.io/)服务，自动将订阅转换为不同梯子所需的格式，实现一条订阅适配多种梯子；
+4. **专属代理分流规则：** 自定义分流规则，实现个性化的分流模式；
+5. **更多功能等待发掘...**
+
+## 🎬 视频教程
+- **CF-Workers-SUB 视频教程**: https://www.youtube.com/watch?v=w6rRY4FDd58
+
+## 🤝 社区支持
+- Telegram 交流群: [@CMLiussss](https://t.me/CMLiussss)
+- 感谢 [Alice Networks](https://alicenetworks.net/) 提供的云服务器维持 [CM订阅转换服务](https://sub.fxxk.dedyn.io/)
+
+## 📦 Pages 部署方法
+
+<details>
+<summary><code><strong>「 Pages GitHub 部署文字教程 」</strong></code></summary>
+
 ### 1. 部署 Cloudflare Pages：
    - 在 Github 上先 Fork 本项目，并点上 Star !!!
    - 在 Cloudflare Pages 控制台中选择 `连接到 Git`后，选中 `CF-Workers-SUB`项目后点击 `开始设置`。
@@ -30,11 +48,17 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)，**感谢[Alice Networ
       https://hy2sub.pages.dev
       ```
 
-## Workers 部署方法
+</details>
+
+## 🛠️ Workers 部署方法
+
+<details>
+<summary><code><strong>「 Workers 部署文字教程 」</strong></code></summary>
+
 ### 1. 部署 Cloudflare Worker：
 
    - 在 Cloudflare Worker 控制台中创建一个新的 Worker。
-   - 将 [worker.js](https://github.com/cmliu/CF-Workers-SUB/blob/main/_worker.js)  的内容粘贴到 Worker 编辑器中。
+   - 将 [_worker.js](https://github.com/cmliu/CF-Workers-SUB/blob/main/_worker.js)  的内容粘贴到 Worker 编辑器中。
 
 
 ### 2. 修改 订阅入口 ：
@@ -62,7 +86,9 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)，**感谢[Alice Networ
       https://hy2sub.pages.dev
       ```
 
-## 变量说明
+</details>
+
+## 📋 变量说明
 | 变量名 | 示例 | 备注 | 
 |--------|---------|-----|
 | TOKEN | `auto` | 快速订阅内置节点的订阅路径地址 /auto | 
@@ -73,13 +99,13 @@ Telegram交流群：[@CMLiussss](https://t.me/CMLiussss)，**感谢[Alice Networ
 | SUBCONFIG | [https://raw.github.../ACL4SSR_Online_MultiCountry.ini](https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_MultiCountry.ini) | clash、singbox等 订阅转换配置文件 | 
 
 
-## 注意事项
+## ⚠️ 注意事项
 项目中，TGTOKEN和TGID在使用时需要先到Telegram注册并获取。其中，TGTOKEN是telegram bot的凭证，TGID是用来接收通知的telegram用户或者组的id。
 
 
-## Star 星星走起
+## ⭐ Star 星星走起
 [![Stargazers over time](https://starchart.cc/cmliu/CF-Workers-SUB.svg?variant=adaptive)](https://starchart.cc/cmliu/CF-Workers-SUB)
 
 
-# 致谢
-<a href="https://alicenetworks.net/"><img src="https://alicenetworks.net/templates/lagom2/assets/img/logo/logo_big.194980063.png" width="150" height="75" alt="Alice Networks LTD"/></a>，[mianayang](https://github.com/mianayang/myself/blob/main/cf-workers/sub/sub.js)、[ACL4SSR](https://github.com/ACL4SSR/ACL4SSR/tree/master/Clash/config)、[肥羊](https://github.com/youshandefeiyang/sub-web-modify)
+# 🙏 致谢
+[Alice Networks LTD](https://alicenetworks.net/)，[mianayang](https://github.com/mianayang/myself/blob/main/cf-workers/sub/sub.js)、[ACL4SSR](https://github.com/ACL4SSR/ACL4SSR/tree/master/Clash/config)、[肥羊](https://github.com/youshandefeiyang/sub-web-modify)
