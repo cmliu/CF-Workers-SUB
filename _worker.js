@@ -452,8 +452,9 @@ async function getSUB(api, request, 追加UA, userAgentHeader) {
 
 async function getUrl(request, targetUrl, 追加UA, userAgentHeader) {
 	// 设置自定义 User-Agent
+	const randomVersion = (Math.random() * (8.10 - 7.00) + 7.00).toFixed(2);
 	const newHeaders = new Headers(request.headers);
-	newHeaders.set("User-Agent", `v2rayN/6.45 cmliu/CF-Workers-SUB ${追加UA}(${userAgentHeader})`);
+	newHeaders.set("User-Agent", `v2rayN/${randomVersion} cmliu/CF-Workers-SUB ${追加UA}(${userAgentHeader})`);
 
 	// 构建新的请求对象
 	const modifiedRequest = new Request(targetUrl, {
