@@ -2,7 +2,15 @@
 
 ![自建汇聚订阅 CF-Workers-SUB](./sub.png)
 
-> 这是一个将多个节点和订阅合并为单一链接的工具，支持自动适配与自定义分流，简化了订阅管理。
+这是一个将多个节点和订阅合并为单一链接的工具，支持自动适配与自定义分流，简化了订阅管理。
+
+> [!CAUTION]
+> **汇聚订阅非base64订阅时**，会自动生成一个**有效期为24小时的临时订阅**，并提交给**订阅转换后端**来完成订阅转换，可避免您的汇聚订阅地址泄露。
+
+> [!WARNING]
+> **汇聚订阅非base64订阅时**，如果您的节点数量**十分庞大**，订阅转换后端将需要较长时间才能完成订阅转换，这会导致部分梯子客户端在订阅时提示超时而无法完成订阅（说直白一点就是**汇聚节点池的节点时容易导致Clash订阅超时**）！
+>
+> 可自行删减订阅节点数量，提高订阅转换效率！
 
 ## 🛠 功能特点
 1. **节点链接自动转换成base64订阅链接：** 这是最基础的功能，可以将您的节点自动转换为base64格式的订阅链接；
@@ -12,7 +20,7 @@
 5. **更多功能等待发掘...**
 
 ## 🎬 视频教程
-- **CF-Workers-SUB 视频教程**: https://www.youtube.com/watch?v=w6rRY4FDd58
+- **[自建订阅！CF-Workers-SUB 教你如何将多节点多订阅汇聚合并为一个订阅！](https://youtu.be/w6rRY4FDd58)**
 
 ## 🤝 社区支持
 - Telegram 交流群: [@CMLiussss](https://t.me/CMLiussss)
@@ -89,14 +97,16 @@
 </details>
 
 ## 📋 变量说明
-| 变量名 | 示例 | 备注 | 
-|--------|---------|-----|
-| TOKEN | `auto` | 快速订阅内置节点的订阅路径地址 /auto | 
-| TGTOKEN | `6894123456:XXXXXXXXXX0qExVsBPUhHDAbXXXXXqWXgBA` | 发送TG通知的机器人token | 
-| TGID | `6946912345` | 接收TG通知的账户数字ID | 
-| SUBNAME | `CF-Workers-SUB` | 订阅名称 |
-| SUBAPI | `subapi.fxxk.dedyn.io` | clash、singbox等 订阅转换后端 | 
-| SUBCONFIG | [https://raw.github.../ACL4SSR_Online_MultiCountry.ini](https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_MultiCountry.ini) | clash、singbox等 订阅转换配置文件 | 
+| 变量名 | 示例 | 必填 | 备注 | 
+|-|-|-|-|
+| TOKEN | `auto` | ✅ | 汇聚订阅的订阅配置路径地址，例如：`/auto` | 
+| GUEST | `test` | ❌ | 汇聚订阅的访客订阅TOKEN，例如：`/sub?token=test` | 
+| LINK | `vless://b7a39...`,`vmess://ew0K...`,`https://sub...` | ❌ | 可同时放入多个节点链接与多个订阅链接，链接之间用换行做间隔（添加**KV命名空间**后，变量将不会使用）|
+| TGTOKEN | `6894123456:XXXXXXXXXX0qExVsBPUhHDAbXXXXXqWXgBA` | ❌ | 发送TG通知的机器人token | 
+| TGID | `6946912345` | ❌ | 接收TG通知的账户数字ID | 
+| SUBNAME | `CF-Workers-SUB` | ❌ | 订阅名称 |
+| SUBAPI | `subapi.fxxk.dedyn.io` | ❌ | clash、singbox等 订阅转换后端 | 
+| SUBCONFIG | [https://raw.github.../ACL4SSR_Online_MultiCountry.ini](https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_MultiCountry.ini) | ❌ | clash、singbox等 订阅转换配置文件 | 
 
 
 ## ⚠️ 注意事项
@@ -108,4 +118,4 @@
 
 
 # 🙏 致谢
-[Alice Networks LTD](https://alicenetworks.net/)，[mianayang](https://github.com/mianayang/myself/blob/main/cf-workers/sub/sub.js)、[ACL4SSR](https://github.com/ACL4SSR/ACL4SSR/tree/master/Clash/config)、[肥羊](https://github.com/youshandefeiyang/sub-web-modify)
+[Alice Networks LTD](https://alicenetworks.net/)，[mianayang](https://github.com/mianayang/myself/blob/main/cf-workers/sub/sub.js)、[ACL4SSR](https://github.com/ACL4SSR/ACL4SSR/tree/master/Clash/config)、[肥羊](https://sub.v1.mk/)
