@@ -453,7 +453,7 @@ async function getSUB(api, request, 追加UA, userAgentHeader) {
 async function getUrl(request, targetUrl, 追加UA, userAgentHeader) {
 	// 设置自定义 User-Agent
 	const newHeaders = new Headers(request.headers);
-	newHeaders.set("User-Agent", `v2rayN/${追加UA} cmliu/CF-Workers-SUB ${userAgentHeader}`);
+	newHeaders.set("User-Agent", `v2rayN/6.45 cmliu/CF-Workers-SUB ${追加UA}(${userAgentHeader})`);
 
 	// 构建新的请求对象
 	const modifiedRequest = new Request(targetUrl, {
