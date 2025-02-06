@@ -13,13 +13,9 @@ let timestamp = 4102329600000;//2099-12-31
 
 //节点链接 + 订阅链接
 let MainData = `
-https://raw.githubusercontent.com/mfuu/v2ray/master/v2ray
-https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list_raw.txt
-https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt
-https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2
-https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/airport_sub_merge.txt
-https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
-https://raw.githubusercontent.com/Pawdroid/Free-servers/refs/heads/main/sub
+vless://89a03517-e8a7-4eb1-9880-7efcad57864f@3x.isa4818.top:54060?type=tcp&security=reality&pbk=NtsMxJ_PQjyiwpLwcOdZhbWlLShBW-0FQFF032VLaRA&fp=random&sni=yahoo.com&sid=c7220b4c15eab766&spx=%2F&flow=xtls-rprx-vision#New_3X-UI_Test*1-1
+vless://be6163d7-2108-4bff-85a3-f41db5468a1c@3x.isa4818.top:59566?type=tcp&security=reality&pbk=zoRZnc3L98AEhIccWrazgDk-2Dw8i6zAQWIgSCYdOBA&fp=random&sni=icloud.com&sid=af48e4e278836d&spx=%2F&flow=xtls-rprx-vision#%E5%A4%87%E7%94%A8%E8%8A%82%E7%82%B9-%E5%A4%87%E7%94%A81
+https://conta.sub-mitce.com/?sid=165915&token=srvdppus
 `
 
 let urls = [];
