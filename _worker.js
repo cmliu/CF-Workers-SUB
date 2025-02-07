@@ -425,16 +425,20 @@ async function getSUB(api, request, 追加UA, userAgentHeader) {
 			if (response.status === 'fulfilled') {
 				const content = await response.value || 'null'; // 获取响应的内容
 				if (content.includes('proxies') && content.includes('proxy-groups')) {
+					//console.log('Clash订阅: ' + response.apiUrl);
 					订阅转换URLs += "|" + response.apiUrl; // Clash 配置
 				} else if (content.includes('outbounds') && content.includes('inbounds')) {
+					//console.log('Singbox订阅: ' + response.apiUrl);
 					订阅转换URLs += "|" + response.apiUrl; // Singbox 配置
 				} else if (content.includes('://')) {
+					//console.log('明文订阅: ' + response.apiUrl);
 					newapi += content + '\n'; // 追加内容
 				} else if (isValidBase64(content)) {
+					//console.log('Base64订阅: ' + response.apiUrl);
 					newapi += base64Decode(content) + '\n'; // 解码并追加内容
 				} else {
 					const 异常订阅LINK = `trojan://CMLiussss@127.0.0.1:8888?security=tls&allowInsecure=1&type=tcp&headerType=none#%E5%BC%82%E5%B8%B8%E8%AE%A2%E9%98%85%20${response.apiUrl.split('://')[1].split('/')[0]}`;
-					console.log(异常订阅LINK);
+					console.log('异常订阅: ' + 异常订阅LINK);
 					异常订阅 += `${异常订阅LINK}\n`;
 				}
 			}
@@ -453,7 +457,7 @@ async function getSUB(api, request, 追加UA, userAgentHeader) {
 async function getUrl(request, targetUrl, 追加UA, userAgentHeader) {
 	// 设置自定义 User-Agent
 	const newHeaders = new Headers(request.headers);
-	newHeaders.set("User-Agent", `v2rayN/6.45 cmliu/CF-Workers-SUB ${追加UA}(${userAgentHeader})`);
+	newHeaders.set("User-Agent", `${atob('djJyYXlOLzYuNDU=')} cmliu/CF-Workers-SUB ${追加UA}(${userAgentHeader})`);
 
 	// 构建新的请求对象
 	const modifiedRequest = new Request(targetUrl, {
@@ -474,8 +478,10 @@ async function getUrl(request, targetUrl, 追加UA, userAgentHeader) {
 }
 
 function isValidBase64(str) {
+	// 先移除所有空白字符(空格、换行、回车等)
+	const cleanStr = str.replace(/\s/g, '');
 	const base64Regex = /^[A-Za-z0-9+/=]+$/;
-	return base64Regex.test(str);
+	return base64Regex.test(cleanStr);
 }
 
 async function 迁移地址列表(env, txt = 'ADD.txt') {
