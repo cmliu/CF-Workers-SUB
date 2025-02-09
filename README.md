@@ -15,7 +15,7 @@
 ## 🛠 功能特点
 1. **节点链接自动转换成base64订阅链接：** 这是最基础的功能，可以将您的节点自动转换为base64格式的订阅链接；
 2. **将多个base64订阅汇聚成一个订阅链接：** 可以将多个订阅（例如不同的机场）合并成一个订阅，只需使用一个订阅地址即可获取所有节点；
-3. **自动适配不同梯子的格式订阅链接：** 依托[订阅转换](https://sub.fxxk.dedyn.io/)服务，自动将订阅转换为不同梯子所需的格式，实现一条订阅适配多种梯子；
+3. **自动适配不同梯子的格式订阅链接：** 依托[订阅转换](https://sub.cmliussss.com/)服务，自动将订阅转换为不同梯子所需的格式，实现一条订阅适配多种梯子；
 4. **专属代理分流规则：** 自定义分流规则，实现个性化的分流模式；
 5. **更多功能等待发掘...**
 
@@ -24,7 +24,7 @@
 
 ## 🤝 社区支持
 - Telegram 交流群: [@CMLiussss](https://t.me/CMLiussss)
-- 感谢 [Alice Networks](https://alicenetworks.net/) 提供的云服务器维持 [CM订阅转换服务](https://sub.fxxk.dedyn.io/)
+- 感谢 [Alice Networks](https://alicenetworks.net/) 提供的云服务器维持 [CM订阅转换服务](https://sub.cmliussss.com/)
 
 ## 📦 Pages 部署方法
 
@@ -105,7 +105,7 @@
 | TGTOKEN | `6894123456:XXXXXXXXXX0qExVsBPUhHDAbXXXXXqWXgBA` | ❌ | 发送TG通知的机器人token | 
 | TGID | `6946912345` | ❌ | 接收TG通知的账户数字ID | 
 | SUBNAME | `CF-Workers-SUB` | ❌ | 订阅名称 |
-| SUBAPI | `subapi.fxxk.dedyn.io` | ❌ | clash、singbox等 订阅转换后端 | 
+| SUBAPI | `SUBAPI.cmliussss.net` | ❌ | clash、singbox等 订阅转换后端 | 
 | SUBCONFIG | [https://raw.github.../ACL4SSR_Online_MultiCountry.ini](https://raw.githubusercontent.com/cmliu/ACL4SSR/main/Clash/config/ACL4SSR_Online_MultiCountry.ini) | ❌ | clash、singbox等 订阅转换配置文件 | 
 
 
