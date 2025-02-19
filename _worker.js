@@ -119,7 +119,8 @@ export default {
 			let req_data = MainData;
 
 			let 追加UA = 'v2rayn';
-			if (url.searchParams.has('clash')) 追加UA = 'clash';
+			if (url.searchParams.has('b64') || url.searchParams.has('base64')) 订阅格式 = 'base64';
+			else if (url.searchParams.has('clash')) 追加UA = 'clash';
 			else if (url.searchParams.has('singbox')) 追加UA = 'singbox';
 			else if (url.searchParams.has('surge')) 追加UA = 'surge';
 			else if (url.searchParams.has('quanx')) 追加UA = 'Quantumult%20X';
@@ -464,7 +465,15 @@ async function getUrl(request, targetUrl, 追加UA, userAgentHeader) {
 		method: request.method,
 		headers: newHeaders,
 		body: request.method === "GET" ? null : request.body,
-		redirect: "follow"
+		redirect: "follow",
+		cf: {
+			// 忽略SSL证书验证
+			insecureSkipVerify: true,
+			// 允许自签名证书
+			allowUntrusted: true,
+			// 禁用证书验证
+			validateCertificate: false
+		}
 	});
 
 	// 输出请求的详细信息
