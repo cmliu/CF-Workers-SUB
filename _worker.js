@@ -168,7 +168,7 @@ export default {
 					return base64.slice(0, base64.length - padding) + '=='.slice(0, padding);
 				}
 
-				base64Data = encodeBase64(result);
+				base64Data = encodeBase64(result.replace(/\u0026/g, '&'))
 			}
 
 			if (订阅格式 == 'base64' || token == fakeToken) {
