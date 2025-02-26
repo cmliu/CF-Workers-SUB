@@ -428,7 +428,7 @@ async function getSUB(api, request, 追加UA, userAgentHeader) {
 				if (content.includes('proxies:')) {
 					//console.log('Clash订阅: ' + response.apiUrl);
 					订阅转换URLs += "|" + response.apiUrl; // Clash 配置
-				} else if (content.includes('outbounds":') && content.includes('inbounds":')) {
+				} else if (content.includes('outbounds"') && content.includes('inbounds"')) {
 					//console.log('Singbox订阅: ' + response.apiUrl);
 					订阅转换URLs += "|" + response.apiUrl; // Singbox 配置
 				} else if (content.includes('://')) {
