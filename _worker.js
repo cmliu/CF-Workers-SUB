@@ -380,7 +380,7 @@ async function proxyURL(proxyURL, url) {
 async function getSUB(api, request, 追加UA, userAgentHeader) {
 	if (!api || api.length === 0) {
 		return [];
-	}
+	} else api = [...new Set(api)]; // 去重
 	let newapi = "";
 	let 订阅转换URLs = "";
 	let 异常订阅 = "";
