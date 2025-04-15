@@ -10,16 +10,16 @@ let FileName = 'CF-Workers-SUB';
 let SUBUpdateTime = 6; //自定义订阅更新时间，单位小时
 let total = 99;//TB
 let timestamp = 4102329600000;//2099-12-31
-
+// https://raw.githubusercontent.com/mfuu/v2ray/master/v2ray
+// https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list_raw.txt
+// https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt
+// https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2
+// https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/airport_sub_merge.txt
+// https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
+// https://raw.githubusercontent.com/Pawdroid/Free-servers/refs/heads/main/sub
 //节点链接 + 订阅链接
 let MainData = `
-https://raw.githubusercontent.com/mfuu/v2ray/master/v2ray
-https://raw.githubusercontent.com/peasoft/NoMoreWalls/master/list_raw.txt
-https://raw.githubusercontent.com/ermaozi/get_subscribe/main/subscribe/v2ray.txt
-https://raw.githubusercontent.com/aiboboxx/v2rayfree/main/v2
-https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/airport_sub_merge.txt
-https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
-https://raw.githubusercontent.com/Pawdroid/Free-servers/refs/heads/main/sub
+
 `
 
 let urls = [];
