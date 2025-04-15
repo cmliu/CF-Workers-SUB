@@ -313,28 +313,50 @@ async function MD5MD5(text) {
 }
 
 function clashFix(content) {
-	if (content.includes('wireguard') && !content.includes('remote-dns-resolve')) {
-		let lines;
-		if (content.includes('\r\n')) {
-			lines = content.split('\r\n');
-		} else {
-			lines = content.split('\n');
-		}
+    if (content.includes('wireguard') && !content.includes('remote-dns-resolve')) {
+        let lines;
+        if (content.includes('\r\n')) {
+            lines = content.split('\r\n');
+        } else {
+            lines = content.split('\n');
+        }
 
-		let result = "";
-		for (let line of lines) {
-			if (line.includes('type: wireguard')) {
-				const 备改内容 = `, mtu: 1280, udp: true`;
-				const 正确内容 = `, mtu: 1280, remote-dns-resolve: true, udp: true`;
-				result += line.replace(new RegExp(备改内容, 'g'), 正确内容) + '\n';
-			} else {
-				result += line + '\n';
-			}
-		}
+        let result = "";
+        for (let line of lines) {
+            if (line.includes('type: wireguard')) {
+                const 备改内容 = `, mtu: 1280, udp: true`;
+                const 正确内容 = `, mtu: 1280, remote-dns-resolve: true, udp: true`;
+                result += line.replace(new RegExp(备改内容, 'g'), 正确内容) + '\n';
+            } else {
+                result += line + '\n';
+            }
+        }
 
-		content = result;
-	}
-	return content;
+        content = result;
+    }
+
+    // 新增：删除 hysteria2 类型的节点
+    if (content.includes('type: hysteria2')) {
+        let lines = content.split('\n');
+        let filteredLines = [];
+        let skip = false;
+
+        for (let line of lines) {
+            if (line.trim().startsWith('- name:')) {
+                skip = false; // 重置跳过标志
+            }
+            if (line.includes('type: hysteria2')) {
+                skip = true; // 标记为需要跳过的节点
+            }
+            if (!skip) {
+                filteredLines.push(line); // 仅保留未标记为跳过的行
+            }
+        }
+
+        content = filteredLines.join('\n');
+    }
+
+    return content;
 }
 
 async function proxyURL(proxyURL, url) {
