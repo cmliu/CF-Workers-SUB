@@ -796,24 +796,29 @@ a:hover {
 							const text = textarea.value;
 							textarea.value = text.replace(/：/g, ':');
 						}
+						// 保存内容函数，带有详细的状态提示和错误处理
 						function saveContent(button) {
 							try {
-								const updateButtonText = (step) => {
-									button.textContent = `保存中: ${step}`;
+								// 更新按钮文本
+								const updateButtonText = function(step) {
+									button.textContent = '保存中: ' + step;
 								};
+								// 判断是否为iOS设备
 								const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 								if (!isIOS) {
 									replaceFullwidthColon();
 								}
 								updateButtonText('开始保存');
 								button.disabled = true;
+
 								const textarea = document.getElementById('content');
 								if (!textarea) {
 									throw new Error('找不到文本编辑区域');
 								}
+
 								updateButtonText('获取内容');
-								let newContent;
-								let originalContent;
+								let newContent = '';
+								let originalContent = '';
 								try {
 									newContent = textarea.value || '';
 									originalContent = textarea.defaultValue || '';
@@ -821,19 +826,22 @@ a:hover {
 									console.error('获取内容错误:', e);
 									throw new Error('无法获取编辑内容');
 								}
+
 								updateButtonText('准备状态更新函数');
-								const updateStatus = (message, isError = false) => {
+								const updateStatus = function(message, isError) {
 									const statusElem = document.getElementById('saveStatus');
 									if (statusElem) {
 										statusElem.textContent = message;
 										statusElem.style.color = isError ? 'red' : '#666';
 									}
 								};
+
 								updateButtonText('准备按钮重置函数');
-								const resetButton = () => {
+								const resetButton = function() {
 									button.textContent = '保存';
 									button.disabled = false;
 								};
+
 								if (newContent !== originalContent) {
 									updateButtonText('发送保存请求');
 									fetch(window.location.href, {
@@ -844,22 +852,22 @@ a:hover {
 										},
 										cache: 'no-cache'
 									})
-									.then(response => {
+									.then(function(response) {
 										updateButtonText('检查响应状态');
 										if (!response.ok) {
-											throw new Error(`HTTP error! status: ${response.status}`);
+											throw new Error('HTTP error! status: ' + response.status);
 										}
 										updateButtonText('更新保存状态');
 										const now = new Date().toLocaleString();
-										document.title = `编辑已保存 ${now}`;
-										updateStatus(`已保存 ${now}`);
+										document.title = '编辑已保存 ' + now;
+										updateStatus('已保存 ' + now);
 									})
-									.catch(error => {
+									.catch(function(error) {
 										updateButtonText('处理错误');
-										console.error('Save error:', error);
-										updateStatus(`保存失败: ${error.message}`, true);
+										console.error('保存错误:', error);
+										updateStatus('保存失败: ' + error.message, true);
 									})
-									.finally(() => {
+									.finally(function() {
 										resetButton();
 									});
 								} else {
@@ -873,17 +881,22 @@ a:hover {
 								button.disabled = false;
 								const statusElem = document.getElementById('saveStatus');
 								if (statusElem) {
-									statusElem.textContent = `错误: ${error.message}`;
+									statusElem.textContent = '错误: ' + error.message;
 									statusElem.style.color = 'red';
 								}
 							}
 						}
+
+						// 绑定事件：失焦时自动保存，输入时延迟保存
 						textarea.addEventListener('blur', saveContent);
-						textarea.addEventListener('input', () => {
+						textarea.addEventListener('input', function() {
 							clearTimeout(timer);
 							timer = setTimeout(saveContent, 5000);
 						});
+
 					}
+
+					// 切换访客订阅显示/隐藏
 					function toggleNotice() {
 						const noticeContent = document.getElementById('noticeContent');
 						const noticeToggle = document.getElementById('noticeToggle');
@@ -895,7 +908,8 @@ a:hover {
 							noticeToggle.textContent = '查看访客订阅∨';
 						}
 					}
-					// 初始化 noticeContent 的 display 属性
+
+					// 初始化 noticeContent 的 display 属性为 none
 					document.addEventListener('DOMContentLoaded', function() {
 						var notice = document.getElementById('noticeContent');
 						if (notice) {
