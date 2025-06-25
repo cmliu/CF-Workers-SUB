@@ -468,7 +468,7 @@ async function getUrl(request, targetUrl, 追加UA, userAgentHeader) {
 		redirect: "follow",
 		cf: {
 			// 忽略SSL证书验证
-			insecureSkipVerify: false,
+			insecureSkipVerify: true,
 			// 允许自签名证书
 			allowUntrusted: true,
 			// 禁用证书验证

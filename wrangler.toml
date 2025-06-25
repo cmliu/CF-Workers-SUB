@@ -1,3 +1,8 @@
 name = "sub-worker"
-main = "_worker.js"
+main = "worker-ho.js"
 compatibility_date = "2025-06-21"
+
+[vars]
+TOKEN = "usPCC5pPIXuLzsL"
+SUBNAME = "Hotinosin-Sub"
+SUBCONFIG = "https://raw.githubusercontent.com/Hotinosin/ACL4SSR/refs/heads/master/Clash/config/ACL4SSR_Online_Mini_MultiCountry-TW.ini"
