@@ -1,4 +1,4 @@
 name = "sub-worker"
 main = "_worker.js"
-compatibility_date = "2025-06-21"
+compatibility_date = "2025-07-07"
 keep_vars = true

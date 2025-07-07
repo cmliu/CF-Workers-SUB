@@ -95,7 +95,7 @@ export default {
 			let 订阅格式 = 'base64';
 			if (userAgent.includes('null') || userAgent.includes('subconverter') || userAgent.includes('nekobox') || userAgent.includes(('CF-Workers-SUB').toLowerCase())) {
 				订阅格式 = 'base64';
-			} else if (userAgent.includes('clash') || (url.searchParams.has('clash') && !userAgent.includes('subconverter'))) {
+			} else if (userAgent.includes('clash') || userAgent.includes('meta') || userAgent.includes('mihomo') || (url.searchParams.has('clash') && !userAgent.includes('subconverter'))) {
 				订阅格式 = 'clash';
 			} else if (userAgent.includes('sing-box') || userAgent.includes('singbox') || ((url.searchParams.has('sb') || url.searchParams.has('singbox')) && !userAgent.includes('subconverter'))) {
 				订阅格式 = 'singbox';
