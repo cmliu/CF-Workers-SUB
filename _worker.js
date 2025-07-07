@@ -93,18 +93,18 @@ export default {
 			await sendMessage(`#获取订阅 ${FileName}`, request.headers.get('CF-Connecting-IP'), `UA: ${userAgentHeader}</tg-spoiler>\n域名: ${url.hostname}\n<tg-spoiler>入口: ${url.pathname + url.search}</tg-spoiler>`);
 
 			let 订阅格式 = 'base64';
-			if (userAgent.includes('null') || userAgent.includes('subconverter') || userAgent.includes('nekobox') || userAgent.includes(('CF-Workers-SUB').toLowerCase())) {
-				订阅格式 = 'base64';
-			} else if (userAgent.includes('clash') || userAgent.includes('meta') || userAgent.includes('mihomo') || (url.searchParams.has('clash') && !userAgent.includes('subconverter'))) {
-				订阅格式 = 'clash';
-			} else if (userAgent.includes('sing-box') || userAgent.includes('singbox') || ((url.searchParams.has('sb') || url.searchParams.has('singbox')) && !userAgent.includes('subconverter'))) {
-				订阅格式 = 'singbox';
-			} else if (userAgent.includes('surge') || (url.searchParams.has('surge') && !userAgent.includes('subconverter'))) {
-				订阅格式 = 'surge';
-			} else if (userAgent.includes('quantumult%20x') || (url.searchParams.has('quanx') && !userAgent.includes('subconverter'))) {
-				订阅格式 = 'quanx';
-			} else if (userAgent.includes('loon') || (url.searchParams.has('loon') && !userAgent.includes('subconverter'))) {
-				订阅格式 = 'loon';
+			if (!(userAgent.includes('null') || userAgent.includes('subconverter') || userAgent.includes('nekobox') || userAgent.includes(('CF-Workers-SUB').toLowerCase()))) {
+				if (userAgent.includes('sing-box') || userAgent.includes('singbox') || url.searchParams.has('sb') || url.searchParams.has('singbox')) {
+					订阅格式 = 'singbox';
+				} else if (userAgent.includes('surge') || url.searchParams.has('surge')) {
+					订阅格式 = 'surge';
+				} else if (userAgent.includes('quantumult') || url.searchParams.has('quanx')) {
+					订阅格式 = 'quanx';
+				} else if (userAgent.includes('loon') || url.searchParams.has('loon')) {
+					订阅格式 = 'loon';
+				} else if (userAgent.includes('clash') || userAgent.includes('meta') || userAgent.includes('mihomo') || url.searchParams.has('clash')) {
+					订阅格式 = 'clash';
+				} 
 			}
 
 			let subConverterUrl;
@@ -168,14 +168,16 @@ export default {
 				base64Data = encodeBase64(result)
 			}
 
+			// 构建响应头对象
+			const responseHeaders = {
+				"content-type": "text/plain; charset=utf-8",
+				"Profile-Update-Interval": `${SUBUpdateTime}`,
+				"Profile-web-page-url": request.url.includes('?') ? request.url.split('?')[0] : request.url,
+				//"Subscription-Userinfo": `upload=${UD}; download=${UD}; total=${total}; expire=${expire}`,
+			};
+
 			if (订阅格式 == 'base64' || token == fakeToken) {
-				return new Response(base64Data, {
-					headers: {
-						"content-type": "text/plain; charset=utf-8",
-						"Profile-Update-Interval": `${SUBUpdateTime}`,
-						//"Subscription-Userinfo": `upload=${UD}; download=${UD}; total=${total}; expire=${expire}`,
-					}
-				});
+				return new Response(base64Data, { headers: responseHeaders });
 			} else if (订阅格式 == 'clash') {
 				subConverterUrl = `${subProtocol}://${subConverter}/sub?target=clash&url=${encodeURIComponent(订阅转换URL)}&insert=false&config=${encodeURIComponent(subConfig)}&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&new_name=true`;
 			} else if (订阅格式 == 'singbox') {
@@ -189,40 +191,15 @@ export default {
 			}
 			//console.log(订阅转换URL);
 			try {
-				const subConverterResponse = await fetch(subConverterUrl);
-
-				if (!subConverterResponse.ok) {
-					return new Response(base64Data, {
-						headers: {
-							"content-type": "text/plain; charset=utf-8",
-							"Profile-Update-Interval": `${SUBUpdateTime}`,
-							"Profile-web-page-url": request.url.includes('?') ? request.url.split('?')[0] : request.url,
-							//"Subscription-Userinfo": `upload=${UD}; download=${UD}; total=${total}; expire=${expire}`,
-						}
-					});
-					//throw new Error(`Error fetching subConverterUrl: ${subConverterResponse.status} ${subConverterResponse.statusText}`);
-				}
+				const subConverterResponse = await fetch(subConverterUrl);//订阅转换
+				if (!subConverterResponse.ok) return new Response(base64Data, { headers: responseHeaders });
 				let subConverterContent = await subConverterResponse.text();
 				if (订阅格式 == 'clash') subConverterContent = await clashFix(subConverterContent);
-				return new Response(subConverterContent, {
-					headers: {
-						"Content-Disposition": `attachment; filename*=utf-8''${encodeURIComponent(FileName)}`,
-						"content-type": "text/plain; charset=utf-8",
-						"Profile-Update-Interval": `${SUBUpdateTime}`,
-						"Profile-web-page-url": request.url.includes('?') ? request.url.split('?')[0] : request.url,
-						//"Subscription-Userinfo": `upload=${UD}; download=${UD}; total=${total}; expire=${expire}`,
-
-					},
-				});
+				// 只有非浏览器订阅才会返回SUBNAME
+				if (!userAgent.includes('mozilla')) responseHeaders["Content-Disposition"] = `attachment; filename*=utf-8''${encodeURIComponent(FileName)}`;
+				return new Response(subConverterContent, { headers: responseHeaders });
 			} catch (error) {
-				return new Response(base64Data, {
-					headers: {
-						"content-type": "text/plain; charset=utf-8",
-						"Profile-Update-Interval": `${SUBUpdateTime}`,
-						"Profile-web-page-url": request.url.includes('?') ? request.url.split('?')[0] : request.url,
-						//"Subscription-Userinfo": `upload=${UD}; download=${UD}; total=${total}; expire=${expire}`,
-					}
-				});
+				return new Response(base64Data, { headers: responseHeaders });
 			}
 		}
 	}
