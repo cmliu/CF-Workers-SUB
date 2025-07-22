@@ -138,7 +138,7 @@ export default {
 
 			//去重
 			const uniqueLines = new Set(text.split('\n'));
-			const result = [...uniqueLines].join('\n');
+			let result = [...uniqueLines].join('\n');
 			//console.log(result);
 
 			if (订阅格式 == 'base64' && !userAgent.includes('subconverter') && 订阅转换URL.includes('://')) {
