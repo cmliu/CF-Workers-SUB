@@ -2,3 +2,7 @@ name = "sub-worker"
 main = "_worker.js"
 compatibility_date = "2025-07-23"
 keep_vars = true
+
+#[[kv_namespaces]]
+#binding = "KV"			#KV绑定名默认不可修改
+#id = "7dbef248fcc547d39689967f91f5f46f"					#KV据库id
