@@ -129,7 +129,7 @@ export default {
 				if (订阅格式 == 'base64' && !userAgent.includes('subconverter') && 请求订阅响应内容[1].includes('://')) {
 					subConverterUrl = `${subProtocol}://${subConverter}/sub?target=mixed&url=${encodeURIComponent(请求订阅响应内容[1])}&insert=false&config=${encodeURIComponent(subConfig)}&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&new_name=true`;
 					try {
-						const subConverterResponse = await fetch(subConverterUrl);
+						const subConverterResponse = await fetch(subConverterUrl, { headers: { 'User-Agent': 'v2rayN/CF-Workers-SUB  (https://github.com/cmliu/CF-Workers-SUB)' } });
 						if (subConverterResponse.ok) {
 							const subConverterContent = await subConverterResponse.text();
 							req_data += '\n' + atob(subConverterContent);
@@ -203,7 +203,7 @@ export default {
 			}
 			//console.log(订阅转换URL);
 			try {
-				const subConverterResponse = await fetch(subConverterUrl);//订阅转换
+				const subConverterResponse = await fetch(subConverterUrl, { headers: { 'User-Agent': userAgentHeader } });//订阅转换
 				if (!subConverterResponse.ok) return new Response(base64Data, { headers: responseHeaders });
 				let subConverterContent = await subConverterResponse.text();
 				if (订阅格式 == 'clash') subConverterContent = await clashFix(subConverterContent);
